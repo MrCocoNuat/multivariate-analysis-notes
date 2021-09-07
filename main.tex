@@ -1,0 +1,2173 @@
+\documentclass[10pt, oneside]{article} 
+\usepackage{amsmath, amsthm, amssymb, wasysym, verbatim, bbm, color, graphics, geometry, cancel}
+
+\geometry{tmargin=.75in, bmargin=.75in, lmargin=.75in, rmargin = .75in}  
+
+%Subspace includers!
+\let\subspeq\sqsubseteq
+%Partial Derivatives!
+\newcommand{\del}{\partial}
+
+%Stacked numbers without delimiters!
+\newcommand{\stack}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
+
+%Pretty inequality symbols!
+\let\leq\leqslant
+\let\geq\geqslant
+
+%Function concatenation symbol!
+\newcommand{\cat}{^{\,\smallfrown}}
+
+%Multiline comments!
+\newcommand{\foobar}[1]{}
+
+%Nobody wants to type these over and over again!
+\let\ep\varepsilon
+\let\de\delta
+
+%Easy set symbols!
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Cdot}{\boldsymbol{\cdot}}
+
+%Compiler complains when \O (empty set) is used in math mode, where it ought to be! 
+\let \foo \O
+\renewcommand{\O}{\text{\foo}}
+
+%Vectors and matrices displayed as bold!
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vecf}[1]{\boldsymbol{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{conv}{Convention}
+\newtheorem{rem}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+
+
+
+\title{Running Lecture Outline: MCS65C Multivariable Mathematics}
+\author{Aaron Wang}
+\date{Academic Year 2019-2020}
+
+\begin{document}
+
+\maketitle
+Note: All addendums to a day made afterwards will be silently appended to that day
+\tableofcontents
+
+\vspace{.25in}
+
+\section{Fall 2019}
+
+\subsection{Sept 9: Foundations of $\R$}
+\begin{itemize}
+    \item $\R$ can be defined with a set of axioms, and the additional elements $\{+,\Cdot,0,1,\R^+\}$
+    \item $0^{\rm th}$ order logic, or propositional logic, is not sufficient to define $\R$, but $1^{\rm st}$ order logic, which deals with predicates of individual elements, is.
+    \begin{itemize}
+        \item The classical example of a $1^{\rm st}$ order conclusion is:\\
+        \\
+        \begin{tabular}{l}
+           All humans are mortal\\
+           Socrates is a human\\
+           \hline Socrates is mortal\
+        \end{tabular}\\\
+        \item This can be quantified as:\\
+        \\
+        \begin{tabular}{l}
+           $(\forall x)(H(x) \Rightarrow M(x))$\\
+           $H(S)$\\
+           \hline $M(S)$\
+        \end{tabular}\\
+        \\
+        where $H(x)$ represents "$x$ is a human", $M(x)$ represents "$x$ is mortal", and $S$ is Socrates.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Sept 10: More axioms of $\R$; sup and inf}
+\begin {itemize}
+    \item Comparison can be defined:
+    \begin {itemize}
+        \item $x>y := x-y\in \R^+$
+        \item $x\geq y := x>y \lor x=y$
+        \item Less-than relations are defined similarly
+    \end{itemize}
+    \item Transitivity of these relations can be proved:
+    \begin{align*}
+        &x<y\land y<z\\
+        &y-x,z-y \in \R^+\\
+        &y-x+z-y=z-x \in \R^+\\
+        &\therefore x>z
+    \end{align*}
+    \item The Completeness Axiom of $\R$ states:
+        \[S \subseteq \R \land S \neq \O \land \Big( \exists b \in \R : S \subseteq (-\infty,b] \Big) \Rightarrow \exists! l : \Big( S\subseteq (-\infty,l] \land (\forall \varepsilon > 0) (S \not\subseteq (-\infty,l-\varepsilon]) \Big)\]
+    
+    Then, $\sup S = l$, and $\inf S$ is defined similarly
+\end{itemize}
+
+\subsection{Sept 11: Sequences and Convergence}
+\begin{itemize}
+    \item Armed with the Completeness Axiom, it is possible to define limits of sequences:
+        \[a_n \rightarrow l \Leftrightarrow (\forall \varepsilon > 0) \big(\exists N : ( n \geq N \Rightarrow | l - a_n | < \varepsilon ) \big)\]
+    \item It can be proved that elements of a set $S$ can be arbitrarily close to $\sup S$:
+        \[(\forall \varepsilon > 0)(\exists x_\varepsilon \in S : |\sup S - x_\varepsilon | < \varepsilon\]
+    \item It can also be proved that a sequence of real numbers can approach at most one real limit; assume: 
+        \[a_n \rightarrow l \land a_n \rightarrow l' \land l \neq l'\]
+    Then, with sufficiently large $n$,
+         \[ | l - a_n | < \varepsilon \land | l' - a_n | < \varepsilon\]
+    Let $\varepsilon = \frac{|l - l'|}{2}$, then add the inequalities:
+        \[|l - a_n| + |l' - a_n| < 2\varepsilon = |l - l'|\]
+    This violates the Triangle Inequality, so it must be true that $l = l'$
+    \item Bounded Monotonic Convergence Theorem (BMCT):
+        \[(\forall n \geq 1)(a_n \leq a_{n+1} \land \exists b : b \geq a_n) \Rightarrow \exists l \in \R : a_n \rightarrow l\]
+        \[l = \sup \{a_n|n \geq 1\} \]
+    Let $l = \sup \{a_n | n \geq 1\}$, which exists since $(a_n)$ is bounded above. The members of $(a_n)$ can be arbitrarily close to $l$, so it can be proved that, 
+        \[(\forall \varepsilon > 0)(\exists n : | l - a_n | < \varepsilon)\]
+    Because the sequence is increasing,
+        \[(\forall n \geq 1) (| l - a_{n+1} | \leq | l - a_n |)\]
+    Conclusion:
+        \[(\forall \varepsilon > 0)(\exists N : \big( n \geq N \Rightarrow |l - a_n| < \varepsilon \big) )\]
+        \[a_n \rightarrow l\]
+    \item A cauchy sequence $(c_n)$ converges, and satisfies:
+        \[(\forall \varepsilon > 0)(\exists N : \big( m,n \geq N \Rightarrow |c_m - c_n|< \varepsilon) \big)\]
+\end{itemize}
+
+\subsection{Sept 12: Cauchy Sequences and the Bolzano-Weierstrass Theorem}
+\begin{itemize}
+    \item Iff a sequence is convergent, it is cauchy
+    \item Convergent sequences are cauchy; set $\varepsilon_1 = 2\varepsilon_2 > 0$ to be the tolerance of the sequence's limit:
+        \[a_n \rightarrow l \Rightarrow |a_n - a_m| = |a_n -l +l - a_m| \leq |a_n - l| + |l - a_m|\]
+    With sufficiently large $n,m$, the rightmost expression is less than $\varepsilon_1 + \varepsilon_1 = \varepsilon_2$
+        \[a_n \rightarrow l \Rightarrow (\forall \varepsilon_2 > 0)(\exists N : m,n > N \Rightarrow |a_n - a_m| < \varepsilon_2)\]
+        \[\therefore a_n \ {\rm is \ cauchy}\]
+    \item The converse is provable too, but with more difficulty
+    \begin{itemize}
+        \item The Sunrise Lemma states that every sequence contains a monotone subsequence
+        \begin{itemize}
+            \item Let n be {\it pretty} if $(\forall k \geq 1)(a_n > a_{n+k})$
+            \item Assume there are infinitely many {\it pretty} n:
+            \begin{itemize}
+                \item Let $n_k$ be the $k^{th}$ {\it pretty} n, $(a_{n_k})$ is a strictly increasing sequence 
+            \end{itemize}
+            \item Assume there are finitely many {\it pretty} n:
+            \begin{itemize}
+                \item Let $m_1 = n_0 + 1$ , where $n_0$ is the greatest {\it pretty} n
+                \item $m_1$ is not {\it pretty}, so $(\exists m_2 : a_{m_1} \leq a_{m_2})$
+                \item $m_k$, where $k \geq 1$ is not {\it pretty}, so $(\exists m_{k+1} : a_{m_{k}} \leq a_{m_{k+1}})$
+                \item By induction, $(a_{m_k})$, where $k \geq 1$, is a decreasing sequence
+            \end{itemize}
+        \end{itemize}
+        \item A bounded sequence must also contain a monotone subsequence by the Sunrise Lemma, which is also bounded. Using the BMCT, the Bolzano-Weierstrass Theorem asserts that every bounded sequence has at least 1 convergent subsequence
+        \item Two additional lemmas:
+        \begin{itemize}
+            \item Every cauchy sequence is bounded:
+            \begin{itemize}
+                \item Select any $\varepsilon > 0$, $\exists N_\varepsilon : (m \geq n \geq N  \Rightarrow |a_m - a_m| < \varepsilon)$
+                \item All terms of the cauchy sequence past $a_n$ are within $\varepsilon$ of $a_n$
+                \item The remaining finite terms are obviously bounded
+            \end{itemize}
+            \item A cauchy sequence $(a_n)$with a subsequence $(a_{k_n})$ converging to $l$ converges to $l$:
+            \begin{itemize}
+                \item Select any $\varepsilon_1, \varepsilon_2 > 0$, let $N$ be the greater of the two cut-off points for the subsequence to be close enough to $l$, and the cauchy sequence's terms to be close enough to each other, and let $k \in \{k_n | n \geq 1\}$
+                \item $ \exists N : (k,n > N \Rightarrow | a_n - a_k | < \varepsilon_1 \land | a_k - l | < \varepsilon_2 )$
+                \item $|a_n - a_k| < \varepsilon_1 \land |a_k - l| < \varepsilon_2 \Rightarrow |a_n - a_k + a_k - l| = |a_n - l| < \varepsilon_1 + \varepsilon_2 = \varepsilon_3 $
+                \item Consequently, $(\forall \varepsilon_3 > 0) \big(\exists N : ( n \geq N \Rightarrow |a_n - l| < \varepsilon_3) \big)$, so $a_n \rightarrow l$
+            \end{itemize}
+        \end{itemize}
+        \item By chaining the three results above, it is now easily proved that cauchy sequences are convergent
+    \end{itemize}
+\end{itemize}
+
+\subsection{Sept 13: Finishing up CCC}
+\begin{itemize}
+    \item The two lemmas above were proved
+    \item Reverse and Regular Triangle Inequality:
+        \[||x|-|y|| \leq |x+y| \leq |x|+|y|\]
+\end{itemize}
+
+\subsection{Sept 16: Rolles' Theorem and Convergence in $R^d$}
+\begin{itemize}
+    \item Rolles' Theorem:
+        \[f(x) \text{ is differentiable on } [a,b] \land f(a) = f(b) \Rightarrow \exists c \in [a,b] : f'(c) = 0\]
+        By the Extreme Value Theorem, $f(x)$ must have global extrema, which are also local extrema\\
+        Let $m \in (a,b)$ be a point where there is such a local maximum\\
+        If $n < m$ and n is close to m, then $f'(n) \geq 0$, and if $n > m$ and they are close, $f'(n) \leq 0$\\
+        Let $n$ approach $m$ from either side, the derivative at $m$ must be both $\geq 0$ and $\leq 0$, so it must be $0$\\
+        \\
+        If the global maximum is at the endpoints, but $f(x)$ has a global minimum in $(a,b)$, just invert the function, find that the derivative at the new global maximum is $0$, and invert it again
+        \\
+        If the global maximum and golbal minimum are both at the endpoints, then $f(x) = c$ and the proof is trivial
+    \item Distance definitions:
+        We use Euclidean Distance $\displaystyle dist(\vec{P},\vec{Q}) = \sqrt{\sum_{k=1}^{d}{(P_k - Q_k)^2}}$ because arbitrary rotations of two points preserve the distance between them
+        \\
+        The generalized Minkowski Distance is:
+            \[dist_m(\vec{P},\vec{Q}) = \sqrt[m]{\sum_{k=1}^{d}|P_k - Q_k|^m}\]
+        For $m < 1$, the Triangle Inequality does not hold, so it is less useful
+    \item There are useful bounds on the distance between two points:
+        \[\max_{1\leq j \leq d} |P_j - Q_j| \leq dist(\vec{P},\vec{Q}) \leq \sqrt{d} \max_{1 \leq j \leq d} |P_j - Q_j| \]
+        The first inequality is obvious and the second is derived from replacing each $|P_k - Q_k|$ in the sum with the maximum $|P_j - Q_j|$
+    \item Convergence in $\R^d$ is now possible to define:
+        \[\vec{P_n} \rightarrow \vec{q} \Leftrightarrow dist(\vec{q},\vec{P_n}) \rightarrow 0\]
+        Combining this with the upper bound on the distance from earlier allows to use coordinatewise convergence:
+        \[\vec{P_n} \rightarrow \vec{q} \Leftrightarrow (\forall k \leq d)(P_{n_k} \rightarrow Q_k)\]
+\end{itemize}
+
+\subsection{Sept 17: EVT and Compact Sets}
+\begin{itemize}
+    \item The norm of a vector,  $|\vec{P}|$ is defined as $\displaystyle \sqrt{\sum_{j=1}^d{P_j^2}}$, and consequently, dist $(\vec{P},\vec{Q}) = |\vec{P}-\vec{Q}|$
+    \item A compact set is closed and bounded:\\
+    A bounded set is a subset of a sufficiently large n-sphere centered on the origin\\
+    A closed set includes its boundary;\\ 
+    A boundary point is one where an arbitrarily small n-sphere centered on it contains interior and exterior points
+    \item The Extreme Value Theorem for real-valued functions:
+        \[f \text{ is continuous on a compact set } K \in \text{dom } f \Rightarrow \exists \, \vec{p},\vec{q} \in K : (\forall \vec{x} \in K) \big( f(\vec{p}) \leq f(\vec{x}) \leq f(\vec{q}) \big)\]
+\end{itemize}
+
+\subsection{Sept 18: Open and Closed}
+\begin{itemize}
+    \item The existence of the boundary of a set K, bd \, $K$, can be defined precisely:
+    \[\vec{p} \in \R^d \land S \subseteq \R^d \land (\forall \varepsilon > 0) \big( \exists \vec{q_\varepsilon} \in S, \vec{r_\varepsilon} \in S^C: |\vec{q_\varepsilon} - \vec{p}| < \varepsilon \land |\vec{r_\varepsilon} - \vec{p}| < \varepsilon \big) \Rightarrow \vec{p} \in \text{bd} \, S\]
+    \item Open set: $K \, \cap$ bd $K = \O$
+    \item Closed set: $K \, \cap$ bd $K = K$, so bd $K \subseteq K$
+    \item  A set $S$ shares a boundary with its complement, so bd $S$ = bd $S^C$
+    \item Two sets in $\R^d$ are both open and closed: $\O$ and $\R^d$, since their boundaries are both $\O$
+    \item If a set $S$ in $\R^d$ is closed, it is sequentially closed:\\
+    Any convergent sequence contained in $S$ converges to a point in $S$
+\end{itemize}
+
+\subsection{Sept 19: Sequential Closure}
+\begin{itemize}
+    \item Closed sets are sequentially closed:\\
+    Assume set $S$ is not sequentially closed, $\exists \vec{p_n} \in S : \vec{p_n} \rightarrow \vec{q} \in S^C$ , but it is closed, so bd$\, S$ is disjoint from $S^C$\\
+    Therefore, $\vec{q} \notin$ bd $\, S \land \vec{q} \notin S$, so there are no elements of $S$ arbitrarily close to $\vec{q}$\\
+    However, sequence $(\vec{p_n})$, fully contained in $S$ must have members arbitrarily close to $\vec{q}$
+    \item Sequentially closed sets are closed:\\
+    Assume set $S$ is open, bd$\, S \subsetneq S$, and let some sequence $(\vec{p_n})$ contained in $S$ converge to some $\vec{q}$;\\
+    Select an arbitrary $\vec{q} \in$ bd $\, S$, so $\vec{q} \notin S$\\
+    This is possible because the elements of $S$ can be arbitrarily close to a point on bd$\, S$\\
+    However, because $(\vec{p_n})$ is contained in $S$, and because the set $S$ is sequentially closed,  $\vec{q} \in S$
+    \item The interior of set $S$, $S^{int}$ is $S \, \backslash$ bd $\, S$, and it is the largest open subset of $S$\\
+    Assume there was a set $U$, such that $S^{int} \subset U \subseteq S$\\
+    $U$ must have extra points in bd$\, S$ for this to be possible\\
+    $U$ is open, so every point in $U$ is in $U^{int} \subseteq S^{int}$
+    However, bd$\, S \cap S^{int} = \O$
+    \item The closure of set $S$, $\bar{S}$ is $S \, \cup $ bd $\, S$, and it is the smallest closed subset of $S$\\
+    This can be proved by essentially negating the previous theorem
+\end{itemize}
+
+\subsection{Sept 20: Arbitrary Unions and Intersections}
+\begin{itemize}
+    \item Four facts about open sets $U_\alpha$ and closed sets $C_\alpha$:
+    \[\bigcup_{\alpha \in A} U_\alpha \text{is open for any A}\]
+    \[\bigcap_{\alpha \in A} U_\alpha \text{is open for finite A}\]
+    If A were infinite, the intersection might be closed, consider $\displaystyle \bigcap_{n \in \N} \Big( -\frac{1}{n},1 + \frac{1}{n} \Big) = [0,1]$
+    \[\bigcap_{\alpha \in A} C_\alpha \text{is closed for any A}\]
+    \[\bigcup_{\alpha \in A} C_\alpha \text{is closed for finite A}\]
+    If A were infinite, the union might be open, consider $\displaystyle \bigcup_{n \in \N} \Big[ \frac{1}{n},1 - \frac{1}{n} \Big] = (0,1)$
+\end{itemize}
+
+\subsection{Sept 23: Open Close Open Close Open Close}
+\begin{itemize}
+    \item Arbitrary unions of open sets are open because an arbitrary point in one of the sets will be fully contained in it, and so it must be fully contained in the union too
+    \item Finite intersections of open sets are open; to fully contain a ball in an intersection of infinitely many, the radius must be a minimum of arbitrary reals; this minimum may not exist at all
+    \item The similar theorems for closed sets are derived with De Morgan's Laws
+\end{itemize}
+
+\subsection{Sept 24: Compactness and Covering}
+\begin{itemize}
+    \item Compact sets have already been defined as closed and bounded:
+        \[K \text{is compact} \Leftrightarrow \text{bd} \, K \subseteq K \land \exists r : B_{r}(0) \supseteq K \]
+    \item Arbitrary intersections of compact sets are compact, since to bound the intersection, it is sufficient to bound any one set, and intersections of closed sets have been established to be closed
+    \item Finite unions of compact sets are compact, since to bound the union; to bound an infinite union, it is necessary to have a radius equal to the maximum of arbitrary reals, which may not exist
+    \item For $S^C$ to be compact, $S$ must be open and a superset of $(B_r(0))^C$ for some $r$
+    \item The Heine-Borel Covering Property:
+        \[\text{compact} \, K \subseteq \bigcup_{n=1}^\infty U_n \rightarrow \exists N : K \subseteq \bigcup_{n=1}^N U_n\]
+    This property even holds if the original set of sets is uncountable
+\end{itemize}
+
+\subsection{Sept 25: Heine-Borel and Limits and Continuity}
+\begin{itemize}
+    \item Prove by contradiction:
+        \[\text{Assume } (\forall N) \bigg( \exists \, \vec{p_n} : \vec{p_n} \in \text{compact } K \land \vec{p_n} \notin \bigcup_{\alpha = 1}^N U_\alpha \bigg)\]
+        K is bounded, so by the Bolzano-Weierstrass Theorem:
+        \[\exists (\vec{p_{k_n}}) : \vec{p_{k_n}} \rightarrow \vec{p}\]
+        K is closed, so it is sequentially closed:
+        \[\vec{p} \in K \subset \bigcup_{\alpha = 1}^N U_\alpha\]
+        \[\vec{p} \in U_m \Rightarrow \exists r : B_r(\vec{p}) \subseteq U_m\]
+        $\vec{p_{k_n}}$ must get arbitrarily close to $\vec{p}$, so for sufficiently large $n$ and $N$,
+        \[\vec{p_{k_n}} \in B_r(\vec{p}) \subseteq U_m \subset \bigcup_{\alpha = 1}^N U_\alpha\]
+    \item Let the function $\vec{f} : D \subseteq \R^d \rightarrow \R^e, D \neq \O$ exist
+    \item Limits of multivariatae functions are defined like they are for real-valued functions:
+        \[(\forall \varepsilon > 0) \Big(\exists \delta > 0 : (\forall \vec{x} \in D) \big(\vec{x} \in B_\delta(\vec{p}) \Rightarrow \vecf{f}(\vec{x}) \in B_\varepsilon(\vec{l}) \big) \Big) \Rightarrow \vec{l} = \lim_{\vec{x} \rightarrow \vec{p}} \vecf{f}(\vec{x})\]
+        Here, $\vec{p} \in \bar{D}$
+    \item Continuity is familiar too:
+        \[\lim_{\vec{x} \rightarrow \vec{p}} \vecf{f}(\vec{x}) = \vecf{f}(\vec{p}) \Rightarrow \vecf{f} \text{ is continuous at $\vec{p}$}\]
+        Here, $\vec{p} \in D$
+\end{itemize}
+
+\subsection{Sept 26: Continuity Theorems}
+\begin{itemize}
+    \item Continuity can be defined in a more easily used form via limits:
+        \[(\forall \varepsilon > 0) \Big(\exists \delta > 0 : (\forall \vec{x} \in D) \big(\vec{x} \in B_\delta(\vec{p}) \Rightarrow \vecf{f}(\vec{x}) \in B_\varepsilon(\vec{\vec{f}(\vec{p})}) \big) \Big) \Rightarrow \vecf{f} \text{ is continuous at $\vec{p}$}\]
+    \item If $\vecf{f}$ is continuous, then for any $\vec{q}$, $S = \{\vec{x} \in D | \vec{f}(\vec{x}) = \vec{q}\}$ is closed (or empty)\\
+        Consider a sequence of points, $(\vec{S_n})$ all in $S$ that converges to $\vec{\hat{S}}$\\ 
+        $\vec{S_n}$ approaches $\vec{\hat{S}}$, so $\vecf{f}(\vec{S_n}) = \vec{q}$ must get arbitrarily close to $\vecf{f}(\vec{\hat{S}})$, which must be $\vec{q}$, since $\vecf{f}$ is continuous\\
+        Then the set $S$ is sequentially closed and closed
+    \item If $\vecf{f} : D_{\vecf{f}} \in \R^j \rightarrow \R^k$ and $\vecf{g} : D_{\vecf{g}} \in \R^k \rightarrow \R^l$ are both continuous, then $\vecf{g} \circ \vecf{f}$ is too\\
+        For any $\varepsilon$ radius for $(\vecf{g} \circ \vecf{f})(\vec{p})$ to be in, there exists some $\delta(\varepsilon)$ that $\vec{f}(\vec{p})$ can be in, since $\vec{g}$ is continuous\\
+        Similarly, there exists some $\eta(\delta(\varepsilon))$ that $\vec{p}$ can be in, since $\vecf{f}$ is continuous
+    \item Therefore, it is possible to build up continuous functions from simpler continuous functions\\
+    Many univariate functions previously studied are continuous on some interval\\
+    Any differentiable univariate function $f$ is continuous, since for $\displaystyle \lim_{h \rightarrow 0} \frac{f(x+h) - f(x)}{h}$ to exist, it must be true that $\displaystyle \lim_{h \rightarrow 0} (f(x+h) - f(x)) = 0$
+\end{itemize}
+
+\subsection{Sept 27: Identifying continuous $\vecf{f}$}
+\begin{itemize}
+    \item Two functions where the range of one is a subset of the domain of the other are composable functions
+    \item Define the Cartesian Product of two functions, $\vecf{f} : D \subseteq \R^d \rightarrow \R^e, \vecf{g} : K \subseteq \R^k \rightarrow \R^l$ as $\vec{f} \times \vecf{g} : D \times E \subseteq \{(a,b) | a \in \R^d, b \in \R^k\} (\text{isomorphic to } \R^{d+k}) \rightarrow \{(a,b) | a \in \R^e, b \in \R^l\} (\text{isomorphic to } \R^{e+l})$
+    \item In short, $(\vecf{f} \times \vecf{g})(\vec{x},\vec{y}) = (\vecf{f}(\vec{x}),\vecf{g}(\vec{y}))$
+    \item This function is continuous if both $\vec{f}$ and $\vecf{g}$ are continuous:\\
+        Consider that $|(\vec{x},\vec{y}) - (\vec{p},\vec{q})| = \sqrt{|\vec{x} - \vec{p}|^2 + |\vec{y} - \vec{q}|^2}$\\
+        If $(\vec{x},\vec{y})$ approaches $(\vec{p},\vec{q})$, then $\vecf{f}(\vec{x})$ and  $\vecf{g}(\vec{y})$ must approach $\vecf{f}(\vec{p})$ and $\vecf{g}(\vec{q})$
+    \item Define another function, $(\vecf{f} \cat \vecf{g})(\vec{x}) = (\vecf{f}(\vec{x}),\vecf{g}(\vec{x}))$, the Cartesian Product of the two functions on the diagonal map $\bigtriangleup (\vec{x}) = (\vec{x},\vec{x})$
+    \item Since the diagonal map is obviously continuous, and compositions of continuous functions are continuous, the concatenation of continuous functions is continuous
+    \item Define yet another function, the $\rm{n^{th}}$ projection map, $\pi_n(\vec{x})$ is the $\rm{n^{th}}$ component of $\vec{x}$
+    \item With these rather basic definitions, it is possible to prove a myriad of functions continuous:
+        \[\vecf{f}(\vec{x},\vec{y},\vec{z}) = \big( \sin (y e^{x + z}) , x^2 + y \cos (yz) \big)\]
+        \[g(x,y,z) = \sin \big( y e^{x + z} \big) \quad \quad g = \sin \circ \Cdot \circ (\pi_2 \cat ( \rm{exp} \circ + \circ (\pi_1 \cat \pi_3))))\]
+        \[h(x,y,z) = x^2 + y \cos (yz) \quad \quad h = + \circ (\Cdot \circ (\pi_1 \cat \pi_1) \cat \Cdot \circ ( \pi_2 \cat \cos \circ \Cdot \circ (\pi_2 \cat \pi_3)))\]
+        \[\vecf{f} = g \cat h\]
+    It's a bit ridiculous to write out functions this way all the time, but since all the root functions are continuous, then $\vecf{f}$ must be as well
+\end{itemize}
+
+\subsection{Oct 3: Continuous Rigor}
+\begin{itemize}
+    \item $+$ is continuous;
+        \[|x-a| < \frac{\varepsilon}{2} \land |y-b| < \frac{\varepsilon}{2} \quad \quad \delta(\varepsilon) = \varepsilon\]
+        \[\Rightarrow |x - a| + |y - b| \leq |+(x,y) - +(a,b)| < \varepsilon\]
+    \item $\Cdot$ is more tricky, work in reverse:
+        \[|\Cdot (x,y) - \Cdot (a,b)|\]
+        \[= |x(y-b) + b(x-a)| \leq |x||y-b|+|b||x-a|\]
+        Here, let $|x-a|$ be at most $1$, so $|x| \leq |a| + 1$
+        \[\leq (|a| + 1)|y-b| + |b||x-a|\]
+        \[< (|a| + 1) \delta(\varepsilon) + |b| \delta(\varepsilon) \leq \varepsilon \quad \quad \delta(\varepsilon) = \min \bigg\{ 1,\frac{\varepsilon}{ 2 \max\{ |a|+1,|b| \} } \bigg\} \]
+    \item The distance between two outputs of a contractive function is less than the distance between the inputs
+\end{itemize}
+
+\subsection{Oct 4: More abstraction}
+\begin{itemize}
+    \item The cartesian product is considered to be associative, even though it isn't really
+    \item More practice:
+        \[\vecf{f} (\vec{x},\vec{y},\vec{z}) = \big( x y e^{z \sin(x)} , z \ln (x + y) \big)\]
+        \[g = \Cdot \circ ((\Cdot \circ (\pi_1 \cat \pi_2)) \cat (\rm{exp} \circ \Cdot \circ (\pi_3 \cat (\sin \circ \pi_1))))\]
+        \[h = \Cdot \circ (\pi_3 \cat (\ln \circ + \circ (\pi_1 \cat \pi_3)))\]
+\end{itemize}
+
+\subsection{Oct 7: EVT for More Functions}
+\begin{itemize}
+    \item The EVT for real-valued functions is stated just like the one for real-to-real-valued functions, except the input set considered is some compact $K \subseteq D$
+    \item The EVT for vector-valued functions asserts:
+        \[\vecf{f} : D \subseteq \R^d \rightarrow \R^e \text{, cont. on compact $K \subseteq D$ } \Rightarrow \text{compact } \vecf{f}[K]\]
+        First, show $K' = \vecf{f}[K]$ is bounded:\\
+        Assume $K'$ is unbounded, then $\exists \, (\vec{y_n}) = (\vecf{f}(\vec{x_n})), \vec{x_n} \in K : (\forall n) \, |\vec{y_n}| \geq n$\\
+        $K$ is bounded, so $\exists \, \text{conv. subsequence } \vec{x_{n_j}} \rightarrow \vec{x_0} \in K,$ a sequentially closed set.\\
+        $\vec{x_{j_n}} \rightarrow \vec{x_0} \Rightarrow \vec{y_{j_n}} \rightarrow \vecf{f}(\vec{x_0})$, by continuity\\
+        However, $\vec{y_{j_n}}$ is unbounded by assumption, while $\vecf{f}(\vec{x_0})$ is not infinite
+    \item Next, show $K'$ is sequentially closed:\\
+        Let the same sequences as above exist, except now $(\vec{y_{j_n}})$ is not unbounded and approaches $\vec{y_0}$\\
+        Necessarily, $\vec{y_0} = \vecf{f}(\vec{x_0})$\\
+        Since $\vec{x_0} \in K$, then $\vec{y_0} \in K'$
+\end{itemize}
+
+\subsection{Oct 8: IVT}
+\begin{itemize}
+    \item Connected sets:
+        \[(\forall \vec{a}, \vec{b} \in C) \big(\exists \text{ continuous }\vecf{\gamma}(t) : \vecf{\gamma}(0) = \vec{a} \land \vecf{\gamma}(1) = \vec{b}) \land \big( m \in (0,1) \Rightarrow \vecf{\gamma}(m) \in C \big) \big) \Rightarrow C \text{ is connected}\]
+        Or, there is a continuous path from any point in the set to any other point entirely in the set\\
+        In convex sets, this path must be a straight line
+    \item The IVT for real-valued functions is stated just like the one for real-to-real-valued functions, except the input set considered is some connected $C \subseteq D$, and an intermediate output is obtained from some input in $C$ less the specified inputs
+    \item The IVT for vector-valued functions asserts:
+        \[\vecf{f} : D \subseteq \R^d \rightarrow \R^e \text{, cont. on connected $C \subseteq D$ } \Rightarrow \text{connected } \vecf{f}[C]\]
+\end{itemize}
+
+\subsection{Oct 10: Connected Sets}
+\begin{itemize}
+    \item $[\gamma]$ is the trace of the path $\gamma$
+    \item $\vec{p}\vec{q}(t)$ or $[\vec{p},\vec{q}]$ is the line segment between $\vec{P}$ and $\vec{q}$
+    \item $\O$ and $\R^d$ are connected
+    \item Connected sets $C_1 \cap C_2 \neq \O \Rightarrow C_1 \cup C_2$ is connected\\
+        Let $\gamma_1 : [a,b] \rightarrow \R^d, \gamma_2 : [c,d] \rightarrow \R^d$ be paths that connect two arbitrary points in $C_1, C_2$ such that $\gamma_1(b) = \gamma_2(c)$\\
+        Define, with domain $[a,b+d-c], \; \displaystyle \gamma_3(t) = 
+            \begin{cases}
+            \gamma_1(t), & t \in [a,b)\\
+            \gamma_2(t-b+c), & t \in [b,b+d-c]
+            \end{cases}$
+        connecting $\gamma_1(a) \in C_1$ to $\gamma_2(d) \in C_2$
+    \item Arbitrary intersections of convex sets are convex
+    \item The only connected subsets of $\R$ are finite or infinite intervals, single points, and $\O$
+\end{itemize}
+
+\subsection{Oct 15: Connected Complements}
+\begin{itemize}
+    \item Complements of connected sets may not be connected; consider an annulus in 2-space.
+    \item More generally, If a path from $\vec{p}$ to $\vec{q}$ has a supremum of the time that the path remains in the set, then the point at that time must be on the boundary of the set, or else it is possible to advance in time.
+\end{itemize}
+
+\subsection{Oct 21: The Short Short Proof of IVT}
+\begin{itemize}
+    \item Let $\vecf{f} : C \rightarrow \vecf{f}[C]$ Prove that there must exist a continuous path $\vecf{\delta}$ between any $\vec{u}, \vec{v} \in \vecf{f}[C]$ entirely in $\vecf{f}[C]$:\\
+        $\exists \, \vec{p}, \vec{q}, \vecf{\gamma} : \vecf{f}(\vec{p}) = \vec{u} \land \vecf{f}(\vec{p}) = \vec{v} \land \vecf{\gamma}$ is a continuous path between $\vec{p}, \vec{q}$ entirely in $C$\\
+        $\vecf{f} \text{ is continuous} \Rightarrow \vecf{\delta} (t) = \vecf{f} (\vecf{\gamma}(t)) \text{ is continuous and entirely in } \vecf{f}[C]$
+    \item Connected sets in $\R$ are convex:\\
+        Let $S \subseteq \R$ be connected, $\exists \text{ continuous } \gamma : [0,1] \rightarrow S : \gamma(0) = a \land \gamma(1) = b$ and choose any $x : a < x < b$\\
+        $T = \{t \in [0,1] \, | \, \gamma(t) \leq x\}$, $0 \in T$ so $T$ is not empty, and $T$ is bounded above by $1$, so $t_0 = \sup \, T$ exists\\
+        $0 \leq t_0 < 1$, since $\gamma(1) = b > x$\\
+        $\gamma(t_0) < x \Rightarrow \gamma(t_0 + \varepsilon) < x$ since $\gamma$ is continuous, then $t_0$ is not an upper bound of $T$\\
+        $\gamma(t_0) > x \Rightarrow t_0 \notin T$\\
+        The only possibility is $\gamma(t_0) = x$, so any $x$ is on the path from $a$ to $b$, $(a,b)$
+\end{itemize}
+
+\subsection{Oct 22: Uniform Continuity}
+\begin{itemize}
+    \item Continuity of $\vecf{f} : D \rightarrow \R^e$ on $S \subseteq D$:
+        \[(\forall \vec{p} \in S)(\forall \varepsilon > 0)(\exists \delta > 0)(\forall \vec{x} \in D) \big( |\vec{x} - \vec{p}| < \delta \Rightarrow |\vecf{f}(\vec{x}) - \vecf{f}(\vec{p})| < \varepsilon \big)\]
+    \item Uniform Continuity of $\vecf{f}$ on $S \subseteq D$:
+        \[(\forall \varepsilon > 0)(\exists \delta > 0)(\forall \vec{x}, \vec{p} \in S) \big( |\vec{x} - \vec{p}| < \delta \Rightarrow |\vecf{f}(\vec{x}) - \vecf{f}(\vec{p})| < \varepsilon \big)\]
+    \item Logical scope shifts allow this; a universal quantifier may be expanded in scope to form a consequent of the original statement.
+    \item If $S$ is relatively open to $D$, $S = D \cap \text{ open } U$, $\vecf{f}$ uniformly continuous on $S$ $\Rightarrow$ $\vecf{f}$ continuous on $S$
+    \item The additional condition is necessary because $\vec{x} \in D$ will approach $\vec{p} \in S$, if a path of $\vec{x}$ exists that never enters $S$, then no conclusion is possible, then the boundary of $S$ inside $D$ cannot be in $S$
+    \item The Uniform Continuity Theorem (UCT)
+        \[\vecf{f} \text{ continuous on compact } K \Rightarrow \vecf{f} \text{ uniformly continuous on } K\]
+\end{itemize}
+
+\subsection{Oct 23: Fire Drilled}
+\begin{itemize}
+    \item The condition for uniform continuity to imply continuity has been updated; some progress was made towards a proof
+\end{itemize}
+
+\subsection{Oct 24: UCT}
+\begin{itemize}
+    \item Assume that the UCT was false on compact $K$, with $\vecf{f}$ continuous on $K$:
+        \[\lnot (\forall \ep > 0)(\exists \de > 0)(\forall \vec{p}. \vec{x} \in K) (|\vec{x} - \vec{p}| < \de \Rightarrow |\vecf{f}(\vec{x}) - \vecf{f}(\vec{p})| < \ep)\]
+        \[\Leftrightarrow (\exists \ep_{\vecf{f}} > 0)(\forall \de > 0)(\exists \vec{p}, \vec{x} \in K)(|\vec{x} - \vec{p}| < \de \land |\vecf{f}(\vec{x}) - \vecf{f}(\vec{p})| \geq \ep_{\vecf{f}})\]
+        Let $\de_n = \frac{1}{n}$ and define the sequence terms $\vec{p_n}, \vec{x_n} \in K : |\vec{p_n} - \vec{x_n}| < \de_n \land  |\vecf{f}(\vec{x}) - \vecf{f}(\vec{p})| \geq \ep_{\vecf{f}}$\\
+        By BW, in the bounded set, $\exists (\vec{p_{n_k}}) \rightarrow \vec{p_e}
+        $, and because the set is closed, $\vec{p_e} \in K$\\
+        $\vecf{f} \text{ is continuous, so } |p_{n_k} - x_{n_k}| < \de_{n_k} \rightarrow 0 \Rightarrow |\vecf{f}(\vec{p_{n_k}}) - \vecf{f}(\vec{x_{n_k}})| \rightarrow 0 < \ep_{\vecf{f}}; \text{ this is a contradiction}$
+\end{itemize}
+
+\subsection{Oct 25: Halved; UCT?}
+\begin{itemize}
+    \item The UCT was almost proved
+\end{itemize}
+
+\subsection{Oct 26: UCT!, and Differentiation}
+\begin{itemize}
+    \item The UCT was finally proved
+    \item $f : D \in \R \rightarrow \R, p \subseteq \text{int} D \Rightarrow \exists r > 0 : B_r(p) \subseteq D$
+    \item If extant, $\displaystyle f'(p) = \lim_{h \rightarrow 0} \frac{f(p+h) - f(p)}{h}$
+    \item This is extensible to higher dimensions, but not directly: $\displaystyle \frac{\vecf{f}(\vec{p} + \vec{h}) - \vecf{f}(p)}{\vec{h}}$ is rather meaningless
+    \item $\vecf{f} : D \subseteq \R^d \rightarrow \R^e$ is differentiable at $\vec{p}$ if $\displaystyle \exists! \, \mat{A} : \lim_{\vec{h} \rightarrow 0} \frac{|\vecf{f}({\vec{p} + \vec{h}) - \vecf{f}(\vec{p}) - \mat{A}\vec{h} }|}{|\vec{h}|} = 0, \, \vecf{f}'(\vec{p}) = \mat{A}$, an $e \times d$ matrix 
+\end{itemize}
+
+\subsection{Oct 29: Differentiability}
+\begin{itemize}
+    \item For real functions $\exists! \mat{A}$; assume $\mat{A}$ and $\mat{B}$ both worked, and let $\Delta f = f(p+h) - f(p)$:
+        \[\frac{\Delta f - \mat{A}h}{|h|} \rightarrow 0 \land \frac{\Delta f - \mat{B}h}{|h|} \rightarrow 0 \Rightarrow \frac{\mat{A}h - \mat{B}h}{|h|} \rightarrow 0 - 0 \Rightarrow \bigg| \frac{(\mat{A} - \mat{B})h}{|h|} \bigg| \rightarrow 0 \Rightarrow |\mat{A} - \mat{B}| \rightarrow 0 \Rightarrow \mat{A} - \mat{B} = 0\]
+    \item The $\mat{A}$ requirement for differentiability and its value agree with the conventional definitions for real functions:
+        \[\lim_{h \rightarrow 0} \frac{|f(p + h) - f(p) - \mat{A}h|}{|h|} = 0 \Leftrightarrow \lim_{h \rightarrow 0} \frac{|f(p + h) - f(p)|}{|h|} = \mat{A}\]
+    \item The uniqueness of $\mat{A}$ is proved in almost the same way for multivariate functions:
+        \[\frac{\Delta \vecf{f} - \mat{A}\vec{h}}{|\vec{h}|} \rightarrow 0 \land \frac{\Delta \vecf{f} - \mat{B}\vec{h}}{|\vec{h}|} \rightarrow 0 \Rightarrow \frac{\mat{A}\vec{h} - \mat{B}\vec{h}}{|\vec{h}|} \rightarrow 0 - 0 \Rightarrow \bigg| \frac{(\mat{A} - \mat{B})\vec{h}}{|\vec{h}|} \bigg| \rightarrow 0 \Rightarrow |\mat{A} - \mat{B}|\vec{i} \rightarrow 0 \Rightarrow \mat{A} - \mat{B} = 0\]
+    where $\vec{i}$ represents an arbitrary unit vector. Considering all basis vectors means that every column of $\mat{A} - \mat{B}$ is the zero vector. Matrices $\mat{A}\vec{h}, \mat{B}\vec{h}$ must be factored according to the order of factors
+\end{itemize}
+
+\subsection{Oct 30: Derivatives}
+\begin{itemize}
+    \item The components of $\mat{A}$ can be found by:
+        \[[\vecf{f}'(\vec{p})]_{i,j} = \vec{e_i} \Cdot \vecf{f}'(\vec{p}) \vec{e_j} = \frac{\del \vecf{f}_i}{\del \vec{x_j}} (\vec{p})\]
+        where $\vec{e_i}$ is the $i^{\rm{th}}$ basis vector, $\vecf{f}_i$ is the $i^{\rm{th}}$ component of $\vecf{f}$, and $\vec{x_j}$ is the $j^{\rm{th}}$ component of $\vec{x}$
+\end{itemize}
+
+\subsection{Oct 31: Partial Derivatives}
+\begin{itemize}
+    \item The existence of partial derivatives at a point does not imply differentiability at that point\\
+        The partial derivatives must be continuous in the neighborhood for that to be true\\
+        Consider a continuous real mapping of intersecting lines in the basis directions of a plane\\
+        The partial derivatives of the point where the curves intersect exists, but this is true nowhere else
+    \item The partial derivative of $z = f(\vec{p}), \vec{p} = (x,y)$ with respect to $x$ is the slope of the tangent line to $\vec{p}$ on the graph that is the intersection of the $xz$ plane containing $\vec{p}$ and the surface of $f$
+\end{itemize}
+
+\subsection{Nov 1: Tangent Planes}
+\begin{itemize}
+    \item The span of vectors along the tangent lines to $z = f(x,y)$ at $\vec{p} = (a,b)$ is a tangent plane:
+        \[z - f(\vec{p}) = \frac{\del f}{\del x}(x-a) + \frac{\del f}{\del y}(y-b)\]
+        This is the best possible first-order approximation plane to the graph of $f$ at $\vec{p}$
+    \item A zero-order approximation plane $l(x,y)$ is any one where:
+        \[\lim_{(x,y) \rightarrow \vec{p}} |f(\vec{p}) - l(x,y)| = 0\]
+        The sole condition is that intersection at $(a,b,c)$ occurs
+    \item The unique or nonexistent first-order approximation plane is the one where:
+        \[\lim_{(x,y) \rightarrow \vec{p}} \frac{|f(\vec{p}) - l(x,y)|}{|\vec{p} - (x,y)|} = 0\]
+        The matrix of $l$ is exactly the first derivative of $f(\vec{p})$
+\end{itemize}
+
+\subsection{Interlude I}
+\begin{itemize}
+    \item A function that is Lipschitz continuous on $S$ is uniformly continuous on $S$
+    \item A neat function $\vecf{f}$ on $S$ is one where $S = \vecf{f^{-1}}[\vecf{f}[S]]$, that is, no point outside $S$ is mapped to the same point as a point in $S$
+    \item Let $\vecf{f}$ be continuous and neat on $S$. The inverse image of any set relatively open in $\vecf{f}[S]$ is relatively open in $S$
+    \item If $S$ is relatively open in $D$, and the inverse image of any set relatively open in $\vecf{f}[S]$ is relatively open in $S$, then $\vecf{f}$ is continuous on $S$
+    \item String the two above together, $\vecf{f}$ is continuous on $D$ iff the inverse image of every set relatively open in $R$ is relatively open in $D$
+    \item If $\vecf{f}|_K$ is one-to-one, where $K \subseteq D$ is compact, and $\vecf{f}$ is continuous on $K$, then $\vecf{f}|^{-1}_K$ is continuous
+    \item $S$ is compact iff for every set of sets $\{U_a | a \in \N \}$ covering $S$, then there exists a covering of $S$ with finitely many sets, i.e. the set of sets $\{U_a | a \in \N \land a < M\}$
+    \item Let $f$ be continuous on closed $C$. If there exists a point $\vec{a}$ and radius $r > 0$ such that $f(\vec{x}) \geq f(\vec{a})$ for all $\vec{x} \in C \backslash B_r(\vec{a})$, then there exists a point $\vec{c} \in C \cap B_r(\vec{a})$ such that $f$ has a global minimum at $\vec{c}$
+    \item The cartesian produts of two sets that are open, closed, bounded, or compact are open, closed, bounded, or compact respectively
+    \item The distance between any two disjoint nonempty sets (i.e. the shortest distance between two points, one in one set and one in the other), one closed and the other compact, is positive
+    \item The union of two nonempty open sets that do not overlap is not connected
+    \item The union of two nonempty closed sets that do not overlap is not connected
+\end{itemize}
+
+\subsection{Nov 5: Chain Rule}
+\begin{itemize}
+    \item Let the functions $\vecf{f} : D \subseteq \R^c \rightarrow \R^d$ and $\vecf{g} : E \subseteq \R^d \rightarrow \R^e$ exist
+    \item The composition, $(\vecf{g} \circ \vecf{f})$ has domain $\{\vec{p} \in D : \vecf{f}(\vec{p}) \in E\}$\\
+    If this set is empty, the two functions are incomposable
+    \item If additionally, $\vecf{f}$ is differentiable at $\vec{p}$ and $\vecf{f}$ is differentiable at $\vecf{f}(\vec{p})$, then the derivative $(\vecf{g} \circ \vecf{f})'(\vec{p})$ is defined as
+        \[\vecf{g}'(\vecf{f}(\vec{p}))\vecf{f}'(\vec{p})\]
+    The two matrices have dimensions $e \times d$ and $d \times c$, so their product has dimensions $e \times c$, consistent with the dimensions of the composition
+\end{itemize}
+
+\subsection{Nov 6: Proof of the Above}
+\begin{itemize}
+    \item $\vecf{f}$ and $\vecf{g}$ are differentiable at $\vec{p}$ and $\vecf{f}(\vec{p}) = \vec{q}$, respectively, is equivalent to the following statements:
+        \[(\exists! \mat{A})(\forall \ep_1 > 0)(\exists \de_1 > 0)(\forall \vec{h})(|\vec{h}| < \de_1 \Rightarrow |\vecf{f}(\vec{p} + \vec{h}) - \vecf{f}(\vec{p}) - \mat{A}\vec{h}| < \ep_1 |\vec{h}|)\]
+        \[(\exists! \mat{B})(\forall \ep_2 > 0)(\exists \de_2 > 0)(\forall \vec{k})(|\vec{k}| < \de_2 \Rightarrow |\vecf{g}(\vec{q} + \vec{k}) - \vecf{g}(\vec{q}) - \mat{B}\vec{k}| < \ep_2 |\vec{k}|)\]
+        The goal is to prove:
+        \[(\exists! \mat{C} = \mat{B}\mat{A})(\forall \ep_3 > 0)(\exists \de_3 > 0)(\forall \vec{h})(|\vec{h}| < \de_3 \Rightarrow Q = |(\vecf{g} \circ \vecf{f})(\vec{p} + \vec{h}) - (\vecf{g} \circ \vecf{f})(\vec{p}) - \mat{C}\vec{h}| < \ep_3 |\vec{h}|)\]
+        \[Q = |\vecf{g}(\vecf{f}(\vec{p} + \vec{h})) - \vecf{g}(\vecf{f}(\vec{p})) - \mat{B}(\mat{A}\vec{h})|\]
+        Fix $k = \vecf{f}(\vec{p} + \vec{h}) - \vecf{f}(\vec{p})$, this will approach $0$ as $\vec{h}$ approaches $0$, since $\vecf{f}$ is continuous at $\vec{P}$ 
+        \[= |\vecf{g}(\vec{q} + \vec{k}) - \vecf{g}(\vec{q}) - \mat{B}(\mat{A}\vec{h})|\]
+        Use the triangle inequality,
+        \[\leq |\vecf{g}(\vec{q} + \vec{k}) - \vecf{g}(\vec{q}) - \mat{B}\vec{k}| + |\mat{B}\vec{k} - \mat{B}(\mat{A}\vec{h})|\]
+        The left term can be upper-bounded by differentiability if $|\vec{k}| < \de_2$, and the right can be simplified by C-S,
+        \[< \ep_2 |\vec{k}| + ||\mat{B}||\, |\vec{k} - \mat{A}\vec{h}|\]
+        $|\vec{k} - \mat{A}\vec{h}|$ can be upper-bounded by differentiability if $|\vec{h}| < \de_1$,
+        \[< \ep_2 |\vec{k}| + ||\mat{B}||\, \ep_1 |\vec{h}|\]
+        Triangle inequality once more,
+        \[\leq \ep_2(|\vec{k} - \mat{A}\vec{h}| + |\mat{A}\vec{h}|) + \ep_2 \, ||\mat{B}||\, |\vec{h}|\]
+        The same simplification as two above, and factoring $|\vec{h}|$
+        \[< (\ep_2 \ep_1 + ||\mat{A}||\, \ep_2 + ||\mat{B}||\, \ep_2)|\vec{h}|\]
+        The left factor of the result is arbitrarily small, so $Q$ can be made less than $\ep_3 |\vec{h}|$
+\end{itemize}
+
+\subsection{Nov 7: Matrix Algebra}
+\begin{itemize}
+    \item Matrix $\mat{A}$ of size $e\times d$ can be represented as the whole:
+        \[\begin{bmatrix}
+            a_{11} & a_{12} & a_{13} & \dots  & a_{1d} \\
+            a_{21} & a_{22} & a_{23} & \dots  & a_{2d} \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            a_{e1} & a_{e2} & a_{e3} & \dots  & a_{ed}
+        \end{bmatrix}\]
+        or as compact representation $[a_{ij}]_{\substack{\scriptscriptstyle 1 \leq i \leq e \\ \scriptscriptstyle 1 \leq j \leq d}}$, or as a population of entries$[\mat{A}]_{ij} = a_{ij}$
+    \item Matrix operations include scaling, $[r\mat{A}]_{ij} = r[\mat{A}]_{ij}$
+        \[0\mat{A} = O \quad 1\mat{A} = \mat{A} \quad r(s\mat{A}) = (rs)\mat{A}\]
+        where $O$ represents the zero matrix of appropraiate size
+    \item Addition is entry-wise with matrices of the same size, $[\mat{A} + \mat{B}]_{ij} = [\mat{A}]_{ij} + [\mat{B}]_{ij}$
+        \[(r+s)\mat{A} = r\mat{A} + s\mat{A} \quad r(\mat{B}+\mat{A}) = r\mat{B} + r\mat{A} \quad \mat{A} + \mat{B} = \mat{B} + \mat{A} \quad \mat{A} + (\mat{B} + \mat{C}) = \mat{A} + (\mat{B} + \mat{C}) \quad \mat{A} + (-\mat{A}) = O \quad \mat{A} + O = \mat{A}\]
+        where $-\mat{A}$ is the matrix $-1\mat{A}$
+    \item Multiplication is slightly more complicated, the matrices must have sizes in the form $e \times d$ and $d \times f$\\
+    Make the mapping $\mat{A} \in \R^{e \times d} \mapsto \vecf{l}_\mat{A} : \R^d \rightarrow \R^e$\\
+        \[\vecf{l}_\mat{A}(\vec{x}) = x_1 \text{col}_1 (\mat{A}) + x_2 \text{col}_2 (\mat{A}) + x_3 \text{col}_3 (\mat{A}) + \dots + x_d \text{col}_d (\mat{A}) = \sum_{j=1}^d x_j \vec{a_j}\]
+\end{itemize}
+
+\subsection{Nov 8: Multiplication of Matrices}
+\begin{itemize}
+    \item It turns out that $\vecf{l}_{\mat{B}\mat{A}}(\vec{x}) = \vecf{l}_\mat{B}(\vecf{l}_\mat{A}(\vec{x}))$
+        \[\vecf{l}_\mat{B}(\vecf{l}_\mat{A}(\vec{x})) = \sum_{k=1}^e \bigg( \sum_{j=1}^{d} x_j \vec{a_j} \bigg) \vec{b_k} = \sum_{j=1}^d x_j \bigg( \sum_{k=1}^{e} [\mat{A}]_{kj} \vec{b_k} \bigg) = \vecf{l}_\mat{C} (\vec{x})\]
+        Simply let $\mat{C} = \mat{B}\mat{A}$, and $\vec{c_j} = \sum_{k=1}^{e}[\mat{A}]_{kj} \vec{b_k}$\\
+        $\vecf{l}_\mat{A} = \vecf{l}_\mat{B} \Rightarrow \mat{A} = \mat{B}$ by using the unit basis vectors $\vec{e_j}$, which establishes the equivalence of each column of $\mat{A}$ and $\mat{B}$\\
+        To actually find $\mat{C}$,
+        \[[\mat{C}]_{dj} = \sum_{k=1}^{e} [\mat{A}]_{kj} [\mat{B}]_{dk}\]
+    \item Using this linear map, other matrix operations can be defined as well:
+        \[\vecf{l}_{r\mat{A}} = r\vecf{l}_\mat{A} \quad \vecf{l}_{\mat{A}+\mat{B}} = \vecf{l}_\mat{A} + \vecf{l}_\mat{B} \quad \vecf{l}_{\mat{B}\mat{A}} = \vecf{l}_\mat{B} \circ \vecf{l}_\mat{A}\]
+    \item $\vecf{l}$ is additive (distributive over +) and homogenous (distributive over scaling) so it is linear
+    \item $\vecf{l}$ follows matrix distribution both ways ($\vecf{l}_{\mat{C}(\mat{B}+\mat{A})} = \vecf{l}_{\mat{C}\mat{B} + \mat{C}\mat{A}}$ and the reverse) and mixed scaling ($\vecf{l}_{(r\mat{B})\mat{A}} = \vecf{l}_{r(\mat{B}\mat{A})} = \vecf{l}_{\mat{B}(r\mat{A})}$)
+    \item $(\mat{B}\mat{A})^\mat{T} = \mat{A^T} \mat{B^T}$, where $^\mat{T}$ is the transpose
+\end{itemize}
+
+\subsection{Nov 12: Utility of Linear Maps}
+\begin{itemize}
+    \item All linear maps are linear functions:
+        \[\vecf{l}_\mat{A}(\vec{x}) = \sum_{k=1}^e x_k \vecf{l}_\mat{A}(\vec{e_k})\]
+        From the formula, this fact is obvious; simply realize that every term is first-degree in $x_k$
+    \item All linear functions are linear maps:\\
+        Let an arbitrary $\vecf{f}(\vec{x})$ be linear,
+        \[\vecf{f}(\vec{x}) = \vecf{f}(x_1 \vec{e_1} + x_2 \vec{e_2} ...)\]
+        \[= \vecf{f}(x_1 \vec{e_1}) + \vecf{f}(x_2 \vec{e_2}) ...\]
+        \[= x_1 \vecf{f}(\vec{e_1}) + x_2 \vecf{f}(\vec{e_2}) ...\]
+        This is exactly the form of a linear map, just with the columns of $\mat{A}$ equal to $\vecf{f}(\vec{e_j})$, and with the fact that $\vecf{l}_\mat{A} = \vecf{l}_\mat{B} \Rightarrow \mat{A} = \mat{B}$
+    \item The equivalency of matrices and linear maps for them makes proving properties of matrices very easy:\\
+        For right-distributity:
+        \[\vecf{l}_{(\mat{B}+\mat{C})\mat{A}} = \vecf{l}_{\mat{B}+\mat{C}} \circ \vecf{l}_\mat{A} = (\vecf{l}_\mat{B} + \vecf{l}_\mat{C}) \circ \vecf{l}_\mat{A} = \vecf{l}_\mat{B} \circ \vecf{l}_\mat{A} + \vecf{l}_\mat{C} \circ \vecf{l}_\mat{A} = \vecf{l}_{\mat{B}\mat{A}} + \vecf{l}_{\mat{C}\mat{A}} = \vecf{l}_{\mat{B}\mat{A} + \mat{C}\mat{A}}\]
+        Left-distributivity is basically the same proof\\
+        For multiplicative associativity:
+        \[\vecf{l}_{(\mat{C}\mat{B})\mat{A}} = \vecf{l}_{\mat{C}\mat{B}} \circ \vecf{l}_\mat{A} = \vecf{l}_\mat{C} \circ \vecf{l}_\mat{B} \circ \vecf{l}_\mat{A} = \vecf{l}_\mat{C} \circ \vecf{l}_{\mat{B}\mat{A}} = \vecf{l}_{\mat{C}(\mat{B}\mat{A})}\]
+\end{itemize}
+
+\subsection{Nov 13: Transposition and Inversion}
+\begin{itemize}
+    \item Transposes are defined:
+        \[[\mat{A^T}]_{ij} = [\mat{A}]_{ji}\]
+        The transpose will have flipped size
+    \item Transposition is linear, its own inverse, and has a speical multiplicative law; the invertibility is a bit obvious:
+        \[[(r\mat{A})^\mat{T}]_{ij} = [r\mat{A}]_{ji} = r[\mat{A}]_{ji} = r[\mat{A^T}]_{ij}\]
+        \[[(\mat{A}+\mat{B})^\mat{T}]_{ij} = [\mat{A}+\mat{B}]_{ji} = [\mat{A}]_{ji}+[\mat{B}]_{ji} = [\mat{A^T}]_{ij} + [\mat{B^T}]_{ij} = [\mat{A^T} + \mat{B^T}]_{ij}\]
+        \[[(\mat{B}\mat{A})^\mat{T}]_{ij} = [\mat{B}\mat{A}]_{ji} = \sum_{d}[\mat{B}]_{jd}[\mat{A}]_{di} = \sum_{d}[\mat{A^T}]_{id}[\mat{B^T}]_{dj} = [\mat{A^T} \mat{B^T}]_{ij}\]
+    \item The identity matrix is simply all $1$ on the main diagonal, or $[\mat{I}]_{ij} = \delta_{ij}$, the Kronecker delta, logically equal to $(i = j)$
+        \[\mat{A}\mat{I} = \mat{A} \quad \mat{I}\mat{A} = \mat{A}\]
+        \[[\mat{A}\mat{I}]_{ij} = \sum_{d}a_{id} \delta_{dj} = a_{ij} \delta_{jj} = [\mat{A}]_{ij}\]
+        \[[\mat{I}\mat{A}]_{ij} ...\]
+        The appropriate $\mat{I}$ must be used. The delta function sifts through the sum to return one term. The continuous analog is the Dirac delta, whose real version has a definite integral across the real line $1$ and value $0$ everywhere except $x=0$
+    \item $\mat{A}$ is left/right invertible if $\exists \mat{L}/\mat{R} : (\mat{L}\mat{A})/(\mat{A}\mat{R}) = I$
+        There may be one left/right inverse, or many, or none. $O$ has no left or right inverse. If a matrix has both a left and right inverse, they are unique and equal, and is denoted $\mat{A}^{-1}$
+        \[\mat{L} = \mat{L}I = \mat{L}(\mat{A}\mat{R}) = (\mat{L}\mat{A})\mat{R} = I\mat{R} = \mat{R}\]
+        \[\mat{L}' = \mat{L}'(\mat{A}\mat{R}) = (\mat{L}'\mat{A})\mat{R} = \mat{R}\]
+        \[\mat{L} = \mat{L}(\mat{A}\mat{R}) = (\mat{L}\mat{A})\mat{R}' = \mat{R}'\]
+\end{itemize}
+
+\subsection{Nov 14: Invertibility}
+\begin{itemize}
+    \item It is true that $\exists \mat{A}^{-1} \Rightarrow \mat{A} \in \R^{d \times d}$
+    \item To prove this, define the notion of rank, the dimension of the span of the column vectors
+    \item The rank of a matrix must lie in $[0,\min \{e,d\}]$; a matrix with every column linearly independent has rank $\min \{e,d\}$, since there are $d$ vectors in $\R^e$
+    \item The only matrices with rank $0$ are $\mat{O}$. $\mat{I_n}$ has rank $n$
+    \item An essential fact is that ${\rm rank} \, AB \leq {\rm rank} \, A$
+\end{itemize}
+
+\subsection{Nov 15*: Squareness}
+\begin{itemize}
+    \item Invertible matrices are square, and the proof is simple with the above properties assumed. Take $\mat{A} \in \R^{e\times d}$, $\mat{BA} = \mat{I}$, $\mat{AB} = \mat{I}$
+        \[e = {\rm rank}\, \mat{I_e} = {\rm rank}\, \mat{AB} \leq {\rm rank}\, \mat{A} \leq d\]
+        \[d = {\rm rank}\, \mat{I_d} = {\rm rank}\, \mat{BA} \leq {\rm rank}\, \mat{B} \leq e\]
+\end{itemize}
+
+\subsection{Nov 18: Dimension}
+\begin{itemize}
+    \item The Steinitz Theorem:\\
+        Take two sets of vectors $\{\vec{v_1}, \vec{v_2} ... \vec{v_k}\}$ and $\{\vec{w_1}, \vec{w_2} ... \vec{w_m}\}$ in $\R^d$, such that their spans are equal, $V$. Then, $k = m \leq d$ and the dimension of $V$ is $k$. $k$ is also the number of vectors in the basis, or spanning set, of $V$.
+    \item The proof of this involves a very fun algebraic fact; an underdetermined homogeneous system of linear equations has at least one nontrivial solution. Suppose that a system of $n$ equations and $n+1$ variables exists, so it is underdetermined by one equation. If n = 1, the system clearly has nontrivial solutions:
+        \[a_1x_1 + a_2x_2 = 0\]
+        Then use induction! Assuming any system with $n$ equations and $n+1$ variables has a nontrivial solution, prove that a system with $n+1$ equations and $n+2$ variables has one too:
+        \[a_{1,1}x_1 + a_{1,2}x_2 + \hdots + a_{1,n+1}x_{n+1} + a_{1,n+2}x_{n+2} = 0\]
+        Solve for $x_{n+2}$ in terms of the other variables. Then, remove this equation, and the system is now of $n$ equations and $n+1$ variables. If its coefficient is $0$, pick a different $x_n$. If all of the coefficients are $0$, this system is underdetermined by more than one equation.\\
+        Any system underdetermined by more than one equation will have a nontrivial solution from the same system with less variables and augmented $0$'s in every solution.
+    \item Now, consider the sets of vectors. $\vec{w_1} \in V$, so
+        \[\vec{w_1} = a_{11}\vec{v_1} + a_{21}\vec{v_2} \hdots a_{k1}\vec{v_k}\]
+        \[\vec{w_2} = a_{12}\vec{v_1} + a_{22}\vec{v_2} \hdots a_{k2}\vec{v_k}\]
+        \[\vdots\]
+        \[\vec{w_m} = a_{1m}\vec{v_1} + a_{2m}\vec{v_2} \hdots a_{km}\vec{v_k}\]
+        Let $\mat{A}$ be the matrix with the coefficients of this system, exactly as written, and $\mat{B}$ the matrix with columns $\vec{v_n}$. Then $\vec{w_n} = \mat{B}({\rm col}_n \mat{A}) = \mat{B}\vec{a_n}$. Moreover, the matrix with columns $\vec{w_n}$, $\mat{C}$, is equivalent to $\mat{BA}$. \foobar{ $\mat{C} \in \R^{d\times m}$, and $\mat{BA} \in \R^{(d \times k)(k \times m)} = \R^{d \times m}$}\\
+        To be continued in a while...
+\end{itemize}
+
+\subsection{Nov 19: Subspaces and Spans}
+\begin{itemize}
+    \item A subspace $V$ of $\R^d$ is nonempty and is closed under addition and scaling, notated $V \subspeq \R^d$. $\dim V \leq d$
+    \item $W \subspeq \R^d \land V \subspeq \R^d \Rightarrow (W \subseteq V \Rightarrow W \subspeq V)$
+    \item A central theorem: $V \subspeq \R^d \Rightarrow \exists \{\vec{v_1}, \vec{v_2}, \hdots , \vec{v_k}\}  \subseteq V$. The set will be linearly independent and $V$ is its span.\\
+        Since $0$ must be an element of $V$, either $V = \{0\} of V \neq \{0\}$. If the first case is true, $V$ is the span of $\O$, which is linearly independent.\\
+        If the second is true, then $\vec{v_1} \in V$. Either $V$ is the span of the set of this one vector, which is linearly independent, or it is not.\\
+        If it is not, then $(\vec{v_2} \neq r \vec{v_1}) \in V$. Either $V$ is the span of the set of two vectors, which is linearly independent, or it is not.\\
+        This continues until the set grows to size $d+1$, at which point it can no longer be linearly independent, from the below theorem, and $V$ must be the span of the set, which can only be $\R^d$
+    \item No set of more than $d$ vectors in $\R^d$ is linearly independent. Assume such a set $\{\vec{v_1}, \hdots , \vec{v_k}\}$ existed.
+    \item A related lemma solves this: $\{\vec{v_1}, \hdots , \vec{v_k}\}$ is linearly independent iff $A\vec{x}$ has only the trivial solution, $A$ is the matrix with columns $\vec{v_n}$.\\
+        Since the assumed system will have $d$ equations and $k$ variables, where it is specified that $k > d$, this system must have a nontrivial solution. Then, the set cannot be linearly independent.
+\end{itemize}
+
+\subsection{Nov 20: Steinitz Resumed}
+\begin{itemize}
+    \item Recall that $\mat{C} = \mat{BA}$. Then $\mat{C}\vec{x} = \mat{B}(\mat{A}\vec{x})$
+    \item Set this equal to $0$ to create a homogeneous system. Since $\mat{C}$ is made of linearly independent vectors, $\mat{C}\vec{x} = 0$ has only the trivial solution. This means that $\mat{A}\vec{x} = 0$, a system with $k$ variables and $m$ equations must also have only the trivial solution, i.e. $k \leq m$
+    \item By switching the roles of $\mat{B}$ and $\mat{C}$ throughout the proof, a system with $m$ variables and $k$ equations is formed which has only the trivial solution, i.e. $m \leq k$
+    \item The only possibility is that $k = m$
+\end{itemize}
+
+\subsection{Nov 21: Subspace Combinators}
+\begin{itemize}
+    \item Let $V, W \subspeq \R^d$, then $V \cap W \subspeq \R^d$ and $V + W \subspeq \R^d$, where space addition is defined as the set of all sums of a vector in one subspace and another in the other
+    \item $V + W$ is also the smallest subspace containining $v \cup W$
+    \item Reminiscient of the same counting paradigm found elsewhere, $\dim (V + W) = \dim V + \dim W - \dim(V \cap W)$. This can easily be extended by induction.
+\end{itemize}
+
+\subsection{Nov 22: Complementary Subspaces}
+\begin{itemize}
+    \item $V^\perp$ is the orthogonal complement to $V$, with every vector in $V^\perp$ perpendicular to every vector in $V$
+    \item $W$, a complement to $V$ intersects it only at $0$, and has $V + W = \R^d$, which together can be notated as $V \oplus W = \R^d$
+    \item Inner products of two vectors must have certain special properties:
+        \[\langle\vec{x}|\vec{y}\rangle \in \R\]
+        \[\langle\vec{x}|\vec{x}\rangle \geq 0, \vec{x} = 0 \Rightarrow \langle\vec{x}|\vec{x}\rangle = 0 \]
+        \[\langle\vec{x}|\vec{y}\rangle = \langle\vec{y}|\vec{x}\rangle\]
+        \[\langle c\vec{x}|\vec{y}\rangle = c\langle\vec{x}|\vec{y}\rangle = \langle\vec{x}|c\vec{y}\rangle\]
+        \[\langle\vec{x} + \vec{y}|\vec{z}\rangle = \langle\vec{x}|\vec{z}\rangle + \langle\vec{y}|\vec{z}\rangle\]
+        Each inner product has a norm associated with it
+        \[|\vec{x}| = \sqrt{\langle\vec{x}|\vec{x}\rangle}\]
+        The simplified Cauchy-Schwarz inequality states:
+        \[|\langle \vec{x} | \vec{y} \rangle | \leq |\vec{x}||\vec{y}|\]
+    \item The special dot product is defined by $\vec{x} \Cdot \vec{y} = \sum_{j}x_j y_j$, and its associated norm is the Euclidean one
+\end{itemize}
+
+\subsection{Nov 25: Null Spaces}
+\begin{itemize}
+    \item The column space of $\mat{A}$, ${\rm Col} \mat{A}$ is the span of the columns of $\mat{A}$, $\{\mat{A}\vec{x}|\vec{x} \in \R^d\}$, and is obviously a subspace of $\R^e$
+    \item The row space, ${\rm Row} \mat{A}$ is the same, but with the rows
+    \item Essentially, $\dim {\rm Row} \mat{A} = \dim {\rm Col} \mat{A} = {\rm rank} \mat{A}$
+    \item The null space. ${\rm Null} \mat{A}$, is $\{\vec{x}|\mat{A}\vec{x} = 0\}$, so it is the solutions to the homogeneous system $a\vec{x} = 0$ with $e$ equations and $d$ variables. It is also a subspace due to closure under addition and scaling, with dimension ${\rm null} \mat{A}$
+    \item The count of free and determined variables also means that ${\rm rank} \mat{A} + {\rm null} \mat{A} = d$, so each dimension lost in a transformation must be lost to the origin
+\end{itemize} 
+
+\subsection{Nov 26: Ranking}
+\begin{itemize}
+    \item The rank of $\mat{A}$ is equal to the number of leading $1$'s (or bound variables) in ${\rm rref}(\mat{A})$
+    \item The reduced row echelon form of $\mat{A}$ is obtained purely by linearity-preserving matrix operations, so the rank of the matrix is not changed by the operation
+    \item It is proved that ${\rm rank} \mat{AB} \leq {\rm rank} \mat{A}$:
+        \[\mat{AB} \text{ is the matrix with columns $\mat{A}\vec{b_k}$}\]
+        These are all in the form $\{A\vec{x} \, | \, x \in \R^e\}$, the column space of $A$\\
+        Then all columns of $\mat{AB}$ are in the column space of $\mat{A}$
+            \[{\rm col}(\mat{AB}) \subspeq {\rm col}(\mat{A})\]
+            \[{\rm rank} \mat{AB} \leq {\rm rank} \mat{A}\]
+\end{itemize}
+
+\subsection{Nov 27*: Full Rank}
+\begin{itemize}
+    \item An invertible square matrix is of full rank
+        \[d = {\rm rank} \, \mat{I} = {\rm rank} \mat{AB} \leq {\rm rank} \mat{A} \leq d\]
+        \[d\leq {\rm rank} \mat{A} \leq d\]
+        The conclusion is apparent
+\end{itemize}
+
+\subsection{Dec 2: Determinants}
+\begin{itemize}
+    \item The determinant is the only function $f : \R^{d \times d} \rightarrow \R$ that is:
+    \begin{itemize}
+        \item Alternating:
+            \[f\left(\begin{bmatrix}
+                & |  &   &  |  &\\
+            \;\;\cdots&\vec{x}&\cdots&\vec{y}&\cdots\;\;\\
+                & |  &   &  |  &    
+            \end{bmatrix}\right)
+            = - f\left(\begin{bmatrix}
+                & |  &   &  |  &\\
+            \;\;\cdots&\vec{y}&\cdots&\vec{x}&\cdots\;\;\\
+                & |  &   &  |  &
+            \end{bmatrix}\right)\]
+        \item Multilinear:
+            \[f\left(\begin{bmatrix}
+                & |  &\\
+            \;\;\cdots&a\vec{x}+b\vec{y}&\cdots\;\;\\
+                & |  &
+            \end{bmatrix}\right)
+            = a\left(\begin{bmatrix}
+                & |  &\\
+            \;\;\cdots&\vec{x}&\cdots\;\;\\
+                & |  &
+            \end{bmatrix}\right)
+            + b\left(\begin{bmatrix}
+                & |  &\\
+            \;\;\cdots&\vec{y}&\cdots\;\;\\
+                & |  &
+            \end{bmatrix}\right)\]
+        \item Normalized:
+            \[f(\mat{I}) = 1\]
+    \end{itemize}
+    \item Uniqueness is easier to prove than existence:
+        \[f(A) = f\left(\begin{bmatrix}
+            | & | &  & |\\
+            \vec{a_1} & \vec{a_2} & \cdots & \vec{a_d}\\
+            | & | &  & |
+        \end{bmatrix}\right)\]
+        A given: $\vec{a} = \sum a_1 \vec{e_1}$
+        \[= f\left(\begin{bmatrix}
+            | & | &  & |\\
+            \sum_{j_1 = 1}^{d} a_{j_1 1}\vec{e_{j_1}} & \sum_{j_2 = 1}^{d} a_{j_2 2}\vec{e_{j_1}} & \cdots & \sum_{j_d = 1}^{d} a_{j_d d}\vec{e_{j_d}}\\
+            | & | &  & |
+        \end{bmatrix}\right)\]
+        Use the mutlilinear property
+        \[= \sum_{j_1 = 1}^{d} \sum_{j_2 = 1}^{d} \cdots \sum_{j_d = 1}^{d} a_{j_1 1} a_{j_2 2} \cdots a_{j_d d} f\left( \begin{bmatrix}
+            | & | & & |\\
+            \vec{e_{j_1}} & \vec{e_{j_2}} & \cdots & \vec{e_{j_d}}\\
+            | & | & & |
+        \end{bmatrix}
+        \right)\]
+        Sift the sum, when any of the $\vec{e_{j_k}}$ are the same, the overall term must be zero, because swapping the identical columns of the matrix cannot change the value of the determinant
+        \[= \sum_{(j_1,j_2,..., j_d) \in S_d} (-1)^{N(j_1,j_2,..., j_d)} a_{j_1 1}a_{j_2 2} \cdots a_{j_d d} f(I)\]
+        $S_d$ is the symmetric group on $d$ objects, or every permutation of $(1,2, \hdots, d)$, and $N(j_1,j_2,..., j_d)$ is the numnber of inversions, or occurences of $(j_a, j_b) : a < b \land j_a > j_b$\\
+        The definition of $f(\mat{A})$ does not depend on $f$ at all, so this function must be unique
+    \item Existence: $f$ is multilinear, from its definition, since multiplications and summations are linear to each input vector
+    \item Normality is easier too, when the permutation is the natural one, $N = 0$ and only $\prod_{k=1}^d a_{kk} = 1$ while any other elementary product is $0$, so the sum is $1$
+\end{itemize}
+
+\subsection{Dec 3: Determinant Alternativity}
+\begin{itemize}
+    \item  For simplicity, let $(j_1,j_2,...,j_d)^\star = (j_1^\star,j_2^\star,...,j_d^\star)$ be the swap of elements $k$ and $l$ of the permutation. The star function is a bijection on the permutations
+    \item To be proven: $N(j_1^\star,j_2^\star,...,j_d^\star) = N(j_1,j_2,...,j_d) + 2n + 1, n \in \Z$
+    \item Then, $\det \mat{A}_{swap}$ will have every term negated, while the elementary products will cover every selection of entries in the matrix, so swapping the order of $a_{j_k k}$ terms has no effect on the magnitude of each term. Alternativity is proven
+\end{itemize}
+
+\subsection{Dec 4: Cauchy Schwarz and Triangles}
+\begin{itemize}
+    \item Let $f(t) = |\vec{w} - t\vec{v}|^2$
+    \item The case where $\vec{z} = 0$ can be handled trivially. Otherwise, 
+        \[0 \leq f(t) = (\vec{w} - t\vec{v})\Cdot(\vec{w} - t\vec{v})\]
+        \[= (\vec{w} \Cdot \vec{w})^2 - 2(\vec{w} \Cdot \vec{v})t + (\vec{v} \Cdot \vec{v}) t^2\]
+        \[= t^2 |\vec{v}|^2 - 2t(\vec{w} \Cdot \vec{v}) + |\vec{w}|^2\]
+        This quadratic in $t$ is always nonnegative and has positive leading coefficient, so $\Delta \leq 0$
+        \[4(\vec{w} \Cdot \vec{v})^2 - 4|\vec{v}|^2|\vec{w}|^2 \leq 0\]
+        \[(\vec{w} \Cdot \vec{v})^2 \leq |\vec{w}|^2|\vec{v}|^2\]
+        \[|\vec{w} \Cdot \vec{v}| \leq |\vec{w}||\vec{v}|\]
+    \item Equality is held under certain conditions: Either $\vec{w}$ is codirectional to $\vec{v}$ and $(\vec{w} \Cdot \vec{v}) = |\vec{w}||\vec{v}|$, or they are antidirectional, and $(\vec{w} \Cdot \vec{v}) = -|\vec{w}||\vec{v}|$
+    \item Defining a norm for matrices is a bit clunky, simply take the norm of the matrix as if it was a big vector
+    \item Matrices satisfy these, assuming the matrices are of appropriate size:   
+        \[||r\mat{A}|| = r||\mat{A}||\]
+        \[||\mat{A}^T|| = ||\mat{A}||\]
+        \[||\mat{AB}|| \leq ||\mat{A}||\,||\mat{B}||\]
+        \[||\mat{A} + \mat{B}|| \leq ||\mat{A}|| + ||\mat{B}||\]
+        The third property is essentially CS again\\
+        The fourth is an application of the triangle inequality, true for many vectors for every norm associated with an inner product and possibly so for those that are not, and whose proof is below:
+        \[|\vec{x} + \vec{y}|^2 = (\vec{x} + \vec{y})\Cdot(\vec{x} + \vec{y}) = |\vec{x}|^2 + |\vec{y}^2| + 2(\vec{x} \Cdot \vec{y})\]
+        \[\leq |\vec{x}|^2 + |\vec{y}^2| + 2|\vec{x} \Cdot \vec{y}|\]
+        \[\leq |\vec{x}|^2 + |\vec{y}^2| + 2|\vec{x}||\vec{y}| = |\vec{x}| + |\vec{y}|^2\]
+        Equality is held if all vectors are codirectional
+\end{itemize}
+
+\subsection{Dec 5: Matrix Breakdown}
+\begin{itemize}
+    \item CS for matrices, which works because an entry in the product of two matrices is basically a dot product:
+        \[||\mat{AB}||^2 = \sum_i \sum_j [\mat{AB}]_{ij}^2 = \sum_i \sum_j \left(\sum_k(a_{ik} b_{kj})\right)^2\]
+        \[= \sum_i \sum_j (\vec{\text{row}_i a \Cdot \vec{b_j}})\]
+        \[\leq \sum_i \sum_j |\vec{\text{row}_i a|^2 |\vec{b_j}}|^2\]
+        \[\sum_i |\vec{\text{row}_i a|^2 \sum_j |\vec{b_j}}|^2\]
+        \[= ||\mat{A}||^2 + ||\mat{B}||^2\]
+        Equality holds when every single row of $\mat{A}$ is parallel to every single column of $\mat{B}$, not the most exciting case
+    \item There is a more versatile matrix norm, the operator norm, defined as:
+        \[||\mat{A}|| = \sup\{|\mat{A}\vec{x}| \, | \, |\vec{x}| = 1\}\]
+        Simply put, how far does the matrix transform the unit sphere?\\
+        A nice property: $||\mat{I}|| = 1$; this was not true for the Hilbert-Schmidt norm
+\end{itemize}
+
+\subsection{Dec 6: Chain Rule Examined}
+\begin{itemize}
+    \item The chain rule can already be applied to functions, and the result is a derivative matrix.
+    \item The individual entries of the derivative matrix are sometimes more useful by themselves:
+        \[[\vecf{h'}]_{ij} = \frac{\del h_i}{\del x_j} = \sum_{k = 1}^e\frac{\del g_i}{\del y_k} (\vecf{f}(\vec{p})) \cdot \frac{\del f_k}{\del x_j} (\vec{p})\]
+        $e$ is the intermediate dimension
+    \item The chain rule with multiple variables and multiple dependencies makes a distinction between the total and partial derivative, which is exactly as observed\\
+    Suppose $f$ depends on $x,y,t$ and $x,y$ depend on $t$, then simply call the higher $t$ by an identical $u$:
+        \[\frac{\del f}{\del u} = \frac{\del x}{\del t} \frac{\del y}{\del t}\]
+\end{itemize}
+
+\subsection{Dec 9: Gradient and MVT}
+\begin{itemize}
+    \item The MVT for vector-to-scalar functions is exactly the same as it is for scalar-to-scalar functions:
+        \[f : \R^d \rightarrow \R\]
+        \[g(t) := f((1 - t)\vec{p} + t\vec{q})\]
+        \[g(1) - g(0) = f(\vec{q}) - f(\vec{p})\]
+    Let the domain of $g$ be $(-\ep, 1 + \ep)$, so it is differentiable on $[0,1]$
+        \[g'(t) = f'((1  - t)\vec{p} + t\vec{q})(\vec{q} - \vec{p})\]
+    Because $g$ is real-to-real, the MVT applies, so
+        \[\exists c : g'(c) = \frac{g(1) - g(0)}{1-0} = f(\vec{q}) - f(\vec{p})\]
+        \[g'(c) = f'((1 - c)\vec{p} + c\vec{q})(\vec{q} - \vec{p})\]
+    Therefore, 
+        \[f(\vec{q}) - f(\vec{p}) = f'((1 - c)\vec{p} + c\vec{q})(\vec{q} - \vec{p})\]
+    $f'((1 - c)\vec{p} + c\vec{q})$ is now notated as $f'(r)$, where $r$ is obviously on the line segment
+    \item $f'(r)^T$ is the vector defined as $\vec{\nabla}f(\vec{r})$, so $\vec{\nabla} f(\vec{r})_j = \frac{\del f}{\del x_j} (\vec{r})$ 
+\end{itemize}
+
+\subsection{Dec 10: Gradient Properties}
+\begin{itemize}
+    \item The MVT can be expressed in terms of the gradient, $f(\vec{q}) - f(\vec{p}) =  \vec{\nabla} f(\vec{r}) \Cdot (\vec{q} - \vec{p})$
+    \item Naturally then, the all-powerful Cauchy-Schwarz inequality is applicable:
+        \[|f(\vec{q}) - f(\vec{p})| \leq |\vec{\nabla} f(\vec{r})||\vec{q} - \vec{p}|\]
+    \item If $f$ is additionally continuously differentiable, the gradient will have continuous components on the compact set, so the EVT applies, and $|\vec{\nabla} f(\vec{r})| \leq M$, so a $C^1$ function fromm $\R^d$ to $\R$ is necessarily Lipschitz continuous on the line segment
+    \item If $f : D \supseteq U \rightarrow \R$ has gradient $0$ at every point in region $U$, then $f$ must be constant
+\end{itemize}
+
+\subsection{Dec 11: MVI}
+\begin{itemize}
+    \item The MVT does not extend to vector-valued functions:
+    \item Consider $\vec{f}: \R^d \rightarrow \R^2$, where $f = g \cat h$
+    \item A simple lemma: $\vecf{f} \,{\rm diff} \Rightarrow f_1,f_2,... \,{\rm diff}$, since the error term of each component must be smaller or equal to the overall error term. Then, assuming $\vecf{f}$ is differentiable, $g$ and $h$ are too
+    \item By the older MVT:
+        \[g(\vec{q}) - f(\vec{p}) = g(\vec{r})(\vec{q} - \vec{p})\]
+        \[h(\vec{q}) - h(\vec{p}) = h(\vec{s})(\vec{q} - \vec{p})\]
+        $\vec{r}$ and $\vec{s}$, while on the same line segment, are not held to be the same point, which is the strongest argument that can be made with this theorem
+    \item A new MVT would assert:
+        \[\vecf{f}(\vec{q}) - \vecf{f}(\vec{p}) = \vecf{f}'(\vec{u})(\vec{q} - \vec{p})\]
+        Therefore,
+        \[g(\vec{q}) - g(\vec{p}) = g'(\vec{u})(\vec{q} - \vec{p})\]
+        \[h(\vec{q}) - h(\vec{p}) = h'(\vec{u})(\vec{q} - \vec{p})\]
+        However, this assertion is too strong, since $g$ and $h$ are completely independent, so it is unreasonable to assume that the same point $u$ will work for both
+    \item The MVI is a weakening:
+        \[|\vecf{f}(\vec{q} - \vec{p})| = |\vecf{f}'(\vec{r})(\vec{q} - \vec{p})| \leq |\vecf{f}'(\vec{r})||(\vec{q} - \vec{p})| \leq \max_{\vec{u} \in [\vec{p},\vec{q}]} |\vecf{f}'(\vec{u})||(\vec{q} - \vec{p})|\]
+        Now, the right side no longer references one specific point. A more practical way to use the MVI is to upper bound the maximum norm with an easy value, which must exist because $f'$ is continuous and $[\vec{p},\vec{q}]$ is compact
+        \[|\vecf{f}(\vec{q} - \vec{p})| \leq M|(\vec{q} - \vec{p})|\]
+        This theorem can be extended to any convex compact set $K$
+\end{itemize}
+
+\subsection{Dec 12: MVT too}
+\begin{itemize}
+    \item The MVT was reviewed
+\end{itemize}
+
+\subsection{Dec 13: Gradients too}
+\begin{itemize}
+    \item Fun with gradients;
+    \item The only time ${\rm size } f(\vec{p}) = {\rm size } f'(\vec{p})$ is when $\dim f(\vec{p}) = 1$
+\end{itemize}
+
+\subsection{Dec 16: MVI too}
+\begin{itemize}
+    \item The MVI was reviewed
+\end{itemize}
+
+\subsection{Dec 17: MVI fwee}
+\begin{itemize}
+    \item A "short" proof of MVI on $K$ by continuous induction:\\
+        Fix $\ep > 0$, which can be pushed to $0$ later
+        \[\vec{q_t} = (1 - t)\vec{p} + t\vec{q} \quad \quad T = \big\{ t\in[0,1] \big| |\vecf{f}(\vec{q_t})- \vecf{f}(\vec{p})| \leq (M+\ep) |\vec{q_t} - \vec{p}|  \big\}\]
+        \[\exists \sup T = t_0 \in [0,1]\]
+        $t_0 \in T$ is the next step. Take some sequence of $t_n \in T$ increasing to $t_0$
+        \[\forall n |\vecf{f}(\vec{q_{t_n}})- \vecf{f}(\vec{p})| \leq (M+\ep) |\vec{q_{t_n}} - \vec{p}|\]
+        Limits and continuity ensure the truth of this at $n \rightarrow \infty$\\
+        Now, to prove $t_0 = 1$, by assuming it is not, then $\exists \de : t_0 + \de \leq 1$\\
+        If it is the case that $|\vecf{f}(\vec{q_{t_0 + \de}})- \vecf{f}(\vec{p})| \leq (M+\ep) |\vec{q_{t_0 + \de}} - \vec{p}|$, then $t_0 + \de \in T$, so $\sup T \neq t_0$
+               \[\begin{tabular}{c c c}
+            $|\vecf{f}(\vec{q_{t_0 + \de}}) - \vecf{f}(\vec{p})|$ & &$(M+\ep)|\vec{q_{t_0 + \de}} - \vec{p}|$\\
+            $\leq |\vecf{f}(\vec{q_{t_0 + \de}}) - \vecf{f}(\vec{q_{t_0}})| + |\vecf{f}(\vec{q_{t_0 + \de}}) - \vecf{f}(\vec{p})|$& &$(M + \ep)|\vec{p} - \de\vec{p} - t_0 \vec{p} + t_0 \vec{q} + \de \vec{q} - \vec{p}|$\\
+            $|\vecf{f}(\vec{q_{t_0}) + \de(\vec{q} - \vec{p})} - \vecf{f}(\vec{q_{t_0}})| + M|\vec{q_{t_0}} - \vec{p}| $& &$(M + \ep)(t_0 + \de)|\vec{q} - \vec{p}|$\\
+            $\leq |\vecf{f}(\vec{q_{t_0}} + \de(\vec{q} - \vec{p})) - \vecf{f}(\vec{q_{t_0}}) - \de \vecf{f'} (\vec{q_{t_0}}) (\vec{q} - \vec{p})| + \de M |\vec{q} - \vec{p}|$&&\\
+            $\leq \ep \de |\vec{q} - \vec{p}| + \de M |\vec{q} - \vec{p}|$&&\\
+            $|\vec{q} - \vec{p}|(\ep \de + M \de + (M + \ep) t_0)$&&\\
+            $|\vec{q} - \vec{p}|(\de + t_0)(M + \ep)$&$\leq$&$(M + \ep)(t_0 + \de)|\vec{q} - \vec{p}|$\\
+            \end{tabular}\]
+            That was terrible.
+\end{itemize}
+
+\subsection{Dec 18: ImpFT}
+\begin{itemize}
+    \item Let some $F(x,y,z)$ exist, then the relation $F(x,y,z) = 0$ can sometimes be reworked as $f(x,y) = z$, even if $f$ will never be defined in terms of named functions
+    \item Affine singlevariate real functions provide the best analogy: $F(x,y) = ax + by + c = 0$ can be expressed as $y = dx + e$ when $\frac{\del F}{\del y} \neq 0$, or else the line is vertical
+    \item Similarly, the Implicit Function Theorem states that $F(x_1,x_2,\hdots,x_d)$ can be redone as \\ $x_k = f(x_1,x_2,\hdots,x_{k-1},x_{k+1},\hdots,x_d)$ in any domain (commonly a box) where $\frac{\del F}{\del x_k} \neq 0$
+    \item $f$ is at least as smooth as $F$ where it is defined
+\end{itemize}
+
+\subsection{Dec 19: Differentiability Revisited}
+\begin{itemize}
+    \item Let $f: D \subseteq \R^d \rightarrow \R$, such that the partial derivatives are continuous at $\vec{p}$ and exist around $\vec{p}$\\
+        The candidate for $A$, or the derivative, is $\left[ \frac{\del f}{\del x_1}, \hdots, \frac{\del f}{\del x_d} \right]$, of which all entries exist. Now, an interesting sum
+        \[f(\vec{x}) - f(\vec{p}) = \sum_{j = 1}^d (f(\vec{p_j}) - f(\vec{p_{j-1}}))\]
+        \[\vec{p_0} = p \quad \vec{p_j} = \vec{p_{j-1}} + (x_j - p_j)\vec{e_j}\]
+        Each increment of $j$ switches just one coordinate of $\vec{p}$ to the coordinate of $\vec{x}$. By the MVT, each term in the sum is equal to some partial derivative
+        \[= \sum_{j=1}^d \frac{\del f}{\del x_j} (\vec{q_j})(x_j - p_j) = \sum_{j=1}^d \frac{\del f}{\del x_j} (\vec{p})(x_j - p_j) + \sum_{j=1}^d \left(\frac{\del f}{\del x_j} (\vec{q_j}) - \frac{\del f}{\del x_j} (\vec{p})\right)(x_j - p_j)\]
+        \[= A(\vec{x} - \vec{p}) + \ep(\vec{x})\]
+        \[\frac{|\ep(\vec{x})|}{|\vec{x} - \vec{p}|} \leq \sum_{j=1}^d \left|\frac{\del f}{\del x_j} (\vec{q_j}) - \frac{\del f}{\del x_j} (\vec{p})\right|\frac{|x_j - p_j|}{|\vec{x} - \vec{p}|} \rightarrow 0 \cdot k, k \leq 1\]
+        Then $f$ has satisfied the test for differentiability
+\end{itemize}
+
+\subsection{Dec 20: ImpFT again}
+\begin{itemize}
+    \item A partial proof, for one equation in three variables, called $x,y,z$ for simplicity, WLOG $\frac{\del F}{\del z} (a,b,c) > 0$:\\
+        Choose $h > 0$, so the box $C_h^3(a,b,c) \subseteq \text{ dom } F$ and $\frac{\del F}{\del z} > 0$ everywhere inside, so $F$ is strictly increasing in $z$\\
+        Choose $r > 0$. so that $F(a,b,c-h) < 0$ for all $a,b \in C_r^2(a,b,c - h)$ and $F(a,b,c+h) > 0$ for all $a,b \in C_r^2(a,b,c + h)$\\
+        For every $a,b$ in the square, there is one $c_0$ where $F(a,b,c_0) = 0$, by the IVT and strict increasing,\\
+        then write $c_0 = f(a,b)$ on that square
+\end{itemize}
+
+\subsection{Jan 2: ImpFT again again}
+\begin{itemize}
+    \item Even if $\frac{\del F}{\del y} = 0$, there may still exist a function $f$ such that $f(\vec{x}) = y$, but the ImpFT cannot help
+    \item To prove the smoothness preserving,
+        \begin{itemize}
+            \item $f$ is continuous on the relevant box
+            \item Partial derivatives of $f$ exist in the box
+            \item $\frac{\del f}{\del x_j} (\vec{x}) = -\frac{\frac{\del F}{\del x_j} (\vec{x},y)}{\frac{\del F}{\del y}(\vec{x},y)}$
+            \item $f$ is $C^1$
+            \item $f$ is $C^k$ by induction
+        \end{itemize}
+\end{itemize}
+
+\subsection{Jan 3: ImpFT proooofs}
+\begin{itemize}
+    \item To prove point 1:
+        \[0 = F(\vec{x},f(\vec{x})) - F(\vec{x_0},f(\vec{x_0}))\]
+        $\vec{x}$ is fixed, and $\vec{x_0}$ is fixed. Since $F$ is by hypothesis $C^1$, the MVT applies, but one term of the dot product is separated:
+        \[0 = \vec{\nabla}_\vec{x} F(\vec{x^\star},y^\star) \Cdot (\vec{x} - \vec{x_0}) + \frac{\del F}{\del y} (\vec{x^\star},y^\star) (f(\vec{x}) - f(\vec{x_0}))\]
+        Let $\vec{x} \rightarrow \vec{x_0}$
+        \[0 = [\text{bounded by EVT}] \cdot 0 + [\text{not 0 in the box}] \cdot (f(\vec{x}) - f(\vec{x_0}))\]
+        \[f(\vec{x}) - f(\vec{x_0}) \rightarrow 0\]
+        So, $f$ is continuous
+    \item To prove points 2, 3, 4, make $\vec{x} = \vec{x_0} + \vec{e_j}h$:
+        \[\frac{f(\vec{x}) - f(\vec{x_0})}{h} = \frac{- \vec{\nabla}_\vec{x} F(\vec{x^\star}, y^\star) \Cdot (\vec{e_j}) h}{h \frac{\del F}{\del y} (\vec{x^\star},y^\star)} = \frac{- \frac{\del F}{\del x_j} (\vec{x^\star}, y^\star)}{\frac{\del F}{\del y} (\vec{x^\star},y^\star)}\]
+        Let $h \rightarrow 0, \vec{x} \rightarrow \vec{x_0}, y \rightarrow y_0$
+        \[\frac{\del f}{\del x_j} (\vec{x}) = -\frac{\frac{\del F}{\del x_j} (\vec{x},y)}{\frac{\del F}{\del y}(\vec{x},y)}\]
+        Since both partial derivatives on the right are continuous, and the denominator is not $0$, their quotient is continuous
+    \item To prove point 5:\\
+        If $f$ is $C^{k-1}$ and $F$ is $C^k$,
+        \[\frac{\del^{k-1} f}{\del x_j^{k-1}} (\vec{x}) = \frac{\frac{\del^{k-1} F}{\del x_j^{k-1}} (\vec{x},y) \hdots}{\frac{\del^{k-1} F}{\del y^{k-1}}(\vec{x},y) \hdots}\]
+        The right is $C^1$ so the left is too, then $F$ is $C^k$ 
+    \item What about when there are multiple functions $F,G,H\hdots$? 
+        \[F(x,y,z,w) = 0 \quad G(x,y,z,w) = 0 \text{ is solved by (a,b,c,d)}\]
+        \[F, G \text{ are } C^1\]
+        \[\text{At (a,b,c,d), } \frac{\del F}{\del z} \frac{\del G}{\del w} - \frac{\del F}{\del w} \frac{\del G}{\del z} \neq 0\]
+        Because of the non-degeneracy condition, one of $\frac{\del F}{\del z}$ or $\frac{\del F}{\del w}$ is not $0$, WLOG assume the former is not $0$\\
+        By ImpFT,
+        \[z = f(x,y,w)\]
+        Non-degeneracy for $G$ and $w$ is also necessarily true now so,
+        \[w = g(x,y,z)\]
+        Now define $H(x,y,z) = G(x,y,z,g(x,y,z))$
+        \[\frac{\del H}{\del z} = \frac{\del G}{\del z} + \frac{\del G}{\del w}\frac{\del f}{\del z } = \frac{\del G}{\del w} - \frac{\del G}{\del w} \frac{\frac{\del F}{\del z}}{\frac{\del F}{\del w}} = \frac{\frac{\del F}{\del z} \frac{\del G}{\del w} - \frac{\del F}{\del w} \frac{\del G}{\del z}}{\frac{\del F}{\del w}} \neq 0\]
+        Because $w = g$ is also $C^1$, $H$ is now $C^1$.
+        \[z = \phi(x,y)\]
+        \[w = g(x,y,\phi(x,y)) = \psi(x,y)\]
+\end{itemize}
+
+\subsection{Jan 6: ImpFT prooooooooooofs}
+\begin{itemize}
+    \item The proof of the ImpFT for more than one equation was reviewed
+    \item The generalization for solving for $n$ of $n + d$ variables with $n$ equations requires a consistent non-degeneracy condition:
+        \[\det \frac{\del(F_1,F_2,\hdots,F_n)}{\del(x_1,x_2,\hdots,x_n)} = \det 
+        \begin{bmatrix}
+            \frac{\del F_1}{\del x_1} & \frac{\del F_1}{\del x_2} & \dots  & \frac{\del F_1}{\del x_n} \\
+            \frac{\del F_2}{\del x_1} & \frac{\del F_2}{\del x_2} & \dots  & \frac{\del F_2}{\del x_n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \frac{\del F_n}{\del x_1} & \frac{\del F_n}{\del x_2} & \dots  & \frac{\del F_n}{\del x_n}
+        \end{bmatrix} \neq 0\]
+    This represents a partial Jacobian that is constrained in variables to a square, which is contrasted to the regular Jacobian that contains all the variables
+\end{itemize}
+
+\subsection{Jan 7: ImpFT to the Max}
+\begin{itemize}
+    \item General ImpFT:
+            \[\vecf{F}(\vec{x},\vec{y}) = 0 \text{ is } C^1\]
+            \[\vecf{F}(\vec{a},\vec{b}) = 0\]
+            With the non-degeneracy condition above, in some box around $(\vec{a},\vec{b})$,
+            \[\exists \vecf{f} : \vec{y} = \vecf{f}(\vec{x})\]
+            \[\frac{\del \vecf{f}}{\del \vec{x}} = \vecf{f}' = -\left( \frac{\del \vecf{F}}{\del \vec{y}} (\vec{x},\vecf{f}(\vec{x}))\right)^{-1} \left( \frac{\del \vecf{F}}{\del \vec{x}} (\vec{x},\vecf{f}(\vec{x})) \right)\]
+\end{itemize}
+    
+\subsection{Jan 8: ImpFT; You thought it was over!}
+\begin{itemize}
+    \item The determinant of a small matrix is commonly found via cofactor expansion; the proof of this is truly marvelous, which this page is too narrow to contain; a hat index indicates omission of a row or column.
+        \[\det \mat{A} = \sum_{j = 1}^n (-1)^{j-1} a_{1j} \det \mat{A}_{\hat{i} \hat{j}}\]
+\end{itemize}
+
+\subsection{Jan 9: ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT}
+\begin{itemize}
+    \item The induction step that will finally be resolved: A system of $m+1$ equations in $m + 1 + d$ variables that fulfills non-degeneracy can be turned into a system of $m$ equations in $m + d$ variables
+    \[\begin{cases}
+    F(\vec{x},y,\vec{z}) = 0\\
+    \vecf{G}(\vec{x},y,\vec{z}) = 0
+    \end{cases}\]
+    Or,
+    \[\vecf{H}(\vec{x},y,\vec{z}) = 0\]
+    By assumption,
+    \[\left|\frac{\del \vecf{H}}{\del (y,\vec{z})}\right| = 
+    \begin{vmatrix}
+        \frac{\del F}{\del y} & \frac{\del F}{\del \vec{z}}\\
+        \frac{\del \vecf{G}}{\del y} & \frac{\del \vecf{G}}{\del \vec{z}}
+    \end{vmatrix} =
+    \frac{\del F}{\del y} \left| \frac{\del \vecf{G}}{\del \vec{z}} \right| - \hdots \neq 0\]
+    At least one term of the determinant is not $0$, so WLOG make the nonzero one $y$; 
+    \[\frac{\del F}{\del y} \left| \frac{\del \vecf{G}}{\del \vec{z}} \right| \neq 0\]
+    Now, solve $F$ for $y$, $0 = \vecf{G}(\vec{x},f(\vec{x},\vec{z}),\vec{z}) = \vecf{K}(\vec{x},\vec{z})$
+    A second non-degeneracy condition is necessary to solve $\vecf{K}$ for $z$
+    \[\frac{\del \vecf{K}}{\del \vec{z}} =
+    \begin{bmatrix}
+        \frac{\del G_1}{\del z_1} & \frac{\del G_1}{\del z_2} & \hdots\\
+        \frac{\del G_2}{\del z_1} & \frac{\del G_2}{\del z_2} & \hdots\\
+        \vdots & \vdots & \ddots
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        \frac{\del G_1}{\del y} \frac{\del f}{\del z_1} & \frac{\del G_1}{\del y} \frac{\del f}{\del z_2} & \hdots\\
+        \frac{\del G_2}{\del y} \frac{\del f}{\del z_1} & \frac{\del G_2}{\del y} \frac{\del f}{\del z_2} & \hdots\\
+        \vdots & \vdots & \ddots
+    \end{bmatrix} +
+    \begin{bmatrix}
+        \frac{\del G_1}{\del z_1} & \frac{\del G_1}{\del z_2} & \hdots\\
+        \frac{\del G_2}{\del z_1} & \frac{\del G_2}{\del z_2} & \hdots\\
+        \vdots & \vdots & \ddots
+    \end{bmatrix} =
+     \frac{\del \vecf{G}}{\del y} \frac{\del F}{\del \vec{z}} + \frac{\del \vecf{G}}{\del \vec{z}}\]
+\end{itemize}
+
+\subsection{Jan 10: ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT ImpFT}
+\begin{itemize}
+    \item To continue:
+        \[= -\frac{\del \vecf{G}}{\del y} \frac{\frac{\del F}{\del \vec{z}}}{\frac{\del F}{\del y}} + \frac{\del \vecf{G}}{\del \vec{z}} = \frac{\frac{\del \vecf{G}}{\del \vec{z}} \frac{\del F}{\del y} - \frac{\del \vecf{G}}{\del y} \frac{\del F}{\del \vec{z}}}{\frac{\del F}{\del y}}\]
+    By analogy to determinants and induction with matrix blocks,
+    \[\left| \frac{\del \vecf{K}}{\del \vec{z}} \right| = \frac{\left| \frac{\del H}{\del (y,\vec{z})} \right|}{\frac{\del F}{\del y}^m} \neq 0\]
+    Now, $\vec{z} = \vecf{\phi}(\vec{x})$, $y = f(\vec{x},\vecf{\phi}(\vec{x})) = \vecf{\psi} (\vec{x})$
+\end{itemize}
+
+\subsection{Jan 13: I\cancel{nv}mpFT}
+\begin{itemize}
+    \item Induction with matrix blocks:
+        \[\begin{vmatrix}
+        a & \vec{c}^T \\ \vec{b} & \mat{D}
+        \end{vmatrix}
+        = a\begin{vmatrix}
+        1 & \frac{\vec{c}^T}{a} \\ \vec{b} & \mat{D}
+        \end{vmatrix}\]
+        By a multiple row shear, where each row from $2$ to $m$ is increased by some multiple of the previous row so that the left entry is $0$,
+        \[= \begin{vmatrix}
+        1 & \frac{\vec{c}^T}{a} \\ 0 & \mat{D} - \vec{b} \frac{\vec{c}^T}{a}
+        \end{vmatrix}\]
+        Then cofactor expansion on the first row, following block multiplication laws, and extraction of a constant from every entry,
+        \[= a \left|\mat{A} - \vec{b}\frac{\vec{c}^T}{a}\right| = \left|a\frac{\mat{A}}{a} - \vec{b}\frac{\vec{c}^T}{a}\right| = \frac{1}{a^{m-1}} \left|a\mat{A} - \vec{b} \vec{c}^T\right|\]
+    \item The Inverse Function Theorem: given 
+        \[\vecf{f} : D \subseteq \R^d \overset{C^1}{\rightarrow} \R^d\] 
+        and 
+        \[\forall \vec{p} \in D, |\vecf{f'}(\vec{p})| \neq 0\]
+        then 
+        \[\exists U \ni \vec{p}, V \ni \vec{p}, (\vecf{g} : V \overset{C^1}{\rightarrow} U) : \forall \vec{x} \in U, \vec{y} \in V,\]
+        \[\vecf{f}(\vecf{g}(\vec{y})) = \vec{y}\] %Seriously, \ni? That's just...
+        \[\vecf{g}(\vecf{f}(\vec{x})) = \vec{x}\]
+        or, $\vecf{g}$ is a local inverse of $\vecf{f}$ near $\vec{p}$
+    \item The justification for this arises from ImpFT:
+        \[\vecf{F}(\vec{x},\vec{y}) := \vec{y} - \vecf{f}(\vec{x})\]
+        with $\dim \vec{x}$ = $\dim \vec{y}$. By its definition,
+        \[\vecf{F}(\vec{x},\vec{y}) = 0 \Rightarrow \vec{y} = \vecf{f}(\vec{x})\]
+        By ImpFT, given non-degeneracy,
+        \[\vecf{F}(\vec{x},\vec{y}) = 0 \Rightarrow \vec{x} = \vecf{g}(\vec{y})\]
+\end{itemize} 
+
+\subsection{Jan 15: InvFT}
+\begin{itemize}
+    \item Let $F(\vec{y},\vec{x}) = \vec{y} - \vecf{f}(\vec{x})$. With input $(\vec{y},\vec{x})$, $F = 0$, so there is a solution point.
+    \item Non-degeneracy of $F$: $0 \neq \left| \frac{\del \vecf{f}}{\del \vec{x}} \right|$
+        \[= \left| \frac{\del \vecf{f}}{\del x_1} \hdots \right| = \left| \frac{\del \vecf{F}}{\del x_1} \hdots \right| = \frac{\del \vecf{F}}{\del \vec{x}}\]
+    \item Continuity of the partials:
+        \[\frac{\del \vecf{F}}{\del \vec{x}} = - \frac{\del \vecf{f}}{\del \vec{x}}, C^1\]
+        \[\frac{\del \vecf{F}}{\del \vec{y}} = I, C^\infty\]
+    \item Now, the ImpFT applies!
+\end{itemize}
+
+\subsection{Jan 16: InvFT sets}
+\begin{itemize}
+    \item It remains to be seen that the open sets $U, V$ actually exist from the InvFT.
+    \item $\vecf{g}$ is injective, and $\vecf{f}$ is surjective.
+    \item Let $U = \vecf{g}[V]$, for simplicity, then what is $V$? The $C^1$ image of an open set may not be open, but its preimage will definitely be. $V = \vecf{f}^{-1}[\vecf{f}[C_r(\vec{q})]] \cap C(\vec{q})$, an open set.
+\end{itemize}
+
+\subsection{Jan 17: Optimization}
+\begin{itemize}
+    \item Constrained and unconstrained extrema of a real function can be:
+    \begin{itemize}
+        \item Local: on a neighborhood around each point
+        \item Relative: on some set
+        \item Global: on the domain
+    \end{itemize}
+    \item A local strict maximum of $f: D \in \R^d \rightarrow \R$, $\vec{p}$, occurs when
+        \[(\exists r > 0) (\forall \vec{x} \in B_r(\vec{p}) \cap D) (f(\vec{x}) < f(\vec{p}))\]
+        This can be true for any function $f$, but to actually find $p$, it is necessary for $f$ to be $C^1$
+    \item Interval analysis is impossible due to the simple fact that intervals are not in $\R^d$. The second derivative test is the preferred method, which has a specific analogue, dealing with all $\binom{d}{2} + d$ second partial derivatives.
+    \item If $\vec{p}$ is a local extremum of $f$, then $\vec{p}$ is a critical point, or $f'(\vec{p})$ is not full rank, or $\vec{\nabla}f(\vec{p}) = 0$.
+        \[\frac{\del f}{\del x_j} (\vec{p}) = \lim_{h \rightarrow 0} \frac{f(\vec{p} + h\vec{e_j}) - f(\vec{p})}{h} = \lim_{h \rightarrow 0} \frac{K}{h}\]
+        This limit exists because of $C^1$-ness. WLOG let $f$ be a local minimum, so $K \geq 0$
+        \[\lim_{h \rightarrow 0^-} \frac{K}{h} \leq 0\]
+        \[\lim_{h \rightarrow 0^+} \frac{K}{h} \geq 0\]
+        The conclusion is apparent.
+\end{itemize}
+
+\section{Spring 2020}
+\subsection{Jan 28: Critical Yeehaw}
+\begin{itemize}
+    \item The analogue of the second derivative test simply uses the eigenvalues of the matrix formed by all the partial derivatives (even repeated mixed ones). For $2\times2$ matrices this is not too bad.
+    \item If the second derivative test is inconclusive, move on to higher derivatives. If an even derivative is not zero, there is a local extrememum; if an odd derivative is not zero, there is a saddle point; if the required derivative does not exist or every derivative is 0, the test fails catastrophically or does not even halt.
+    \item A practical example: $f(x,y) = x^2 - y^2$, the simplest hyperbolic paraboloid (which is named for its traces along the axial planes)
+        \[f'(x,y)|_{(0,0)} = \begin{bmatrix}0&0\end{bmatrix}\]
+        However, the origin is clearly not a local extremum, for
+        \[f(0,\ep) = -\ep^2 \quad \quad f(\ep,0) = \ep^2\]
+        Calculate the determinant of the $2\times2$ Hessian, the product of its eigenvalues:
+        \[\det \mat{H} = \begin{vmatrix}
+            \frac{\del^2 f}{\del x^2} & \frac{\del^2 f}{\del x \del y}\\
+            \frac{\del^2 f}{\del y \del x} & \frac{\del^2 f}{\del y^2}\\
+        \end{vmatrix}
+        = \begin{vmatrix}
+            2 & 0\\
+            0 & -2\\
+        \end{vmatrix}
+        = -4\]
+        Then the eigenvalues must have opposite sign, and a saddle point is confirmed.
+\end{itemize}
+
+\subsection{Jan 29: Taylo$\R$'s Theorem}
+\begin{itemize}
+    \item Taylor's Theorem:
+        \[f : I \subseteq \R \overset{C^{k+1}}{\longrightarrow} \R, (a-r,a+r) \in I\]
+        \[\Rightarrow (\forall h : |h| < r)\left(f(a+h) = \sum_{j=0}^k \frac{f^{(j)}(a)}{j!} h^j + \frac{h^{k+1}}{k!} \int_0^1 (1-t)^k f^{(k+1)}(a + th)\right)\\
+        = (T_k^af)(h) + (R_k^af)(h)\]
+    \item The error term must be $o(h^j)$, or else it subsumes terms of the polynomial
+    \item To prove the theorem, establish the base case for degree $0$:
+        \[f(a) + h\int_0^1 f'(a+th) dt = f(a) + \int_a^{a+h} f'(u) du = f(a+h)\]
+    \item Then, induction: assume the theorem holds for degree $m$, then establish it for degree $m+1$ by integration by parts:
+        \[f(a+h) = (T_m^af)(h) + \frac{h^{m+1}}{m!} \int_0^1 (1-t)^m f^{(m+1)} (a+th) dt\]
+        \[= (T_m^af)(h) + \frac{h^{m+1}}{m!} \left( f^{(m+1)} (a+th) \cdot \frac{ - (1-t)^{m+1}}{m+1} \Bigg]_0^1 + \int_0^1 \frac{(1-t)^{m+1}}{m+1} \cdot h f^{(m+2)} (a+th) dt \right)\]
+        \[= (T_m^af)(h) + \frac{h^{m+1}}{m!} \left( 0(\hdots) + \frac{f^{(m+1)} (a+th)}{m+1}\right) + \frac{h^{m+2}}{(m+1)!} \int_0^1 (1-t)^{m+1} f^{(m+2)} (a+th) dt\]
+        \[= (T_{m+1}^af)(h) + \frac{h^{m+2}}{(m+1)!} \int_0^1 (1-t)^{m+1} f^{(m+2)} (a+th) dt\]
+        This only applies for $m\leq k-1$, for the $m+2^{th}$ derivative to be integrable
+\end{itemize}
+
+\subsection{Jan 30: One Index was Never Enough!}
+\begin{itemize}
+    \item Multi-indexes!\\
+        Let the following exist:
+        \[\vec{x} \quad \quad \alpha\]
+        Both are $k$-dimensional vectors, with $\alpha$ composed of strictly non-negative integers.
+    \item The degree:
+        \[|\alpha| = \sum \alpha_j\]
+    \item The factorial:
+        \[\alpha! = \prod (\alpha_j!)\]
+    \item The power of a vector:
+        \[\vec{x}^\alpha = \prod(x_j^{\alpha_j})\]
+    \item The multi-differential, in the appropriate order:
+        \[\del^\alpha f\ = \frac{\del^{|\alpha|} f}{\prod (\del_{x_j}^{\alpha_j})}\]
+        A practical example:
+        \[\del^{(2,0,5)} f = \frac{\del^7 f}{\del_{x_3}^5 \del_{x_1}^2}\]
+    \item To apply, any polynomial of degree at most $k$ in $\vec{x}$ can be written as:
+        \[P(\vec{x}) = \sum_{|\alpha| \leq k} c_\alpha \vec{x}^\alpha\]
+    \item The multinomial theorem mirrors the binomial theorem:
+        \[(x_1 + x_2)^n = \sum_{|\alpha| \leq n} \frac{n!}{\alpha!} \vec{x}^\alpha\]
+        \[(x_1 + x_2 + \hdots + x_k)^n = \! \! \! \! \sum_{\stack{|\alpha| \leq n}{\dim(\alpha) = k}} \! \! \! \! \frac{n!}{\alpha!} \vec{x}^\alpha\]
+        This can be derived by induction on $k$
+    \item The dot gradient:
+        \[\vec{h} \cdot \vec{\nabla} = \sum_j h_j \frac{\del}{\del x_j}\]
+        Miraculously,
+        \[(\vec{h} \cdot \vec{\nabla})^{(j)} = \sum_{|\alpha| = j} \vec{h}^\alpha \del^\alpha\]
+\end{itemize}
+
+\subsection{Jan 31: protobowl.com}
+\begin{itemize}
+    \item Try it, it's fun
+\end{itemize}
+
+\subsection{Feb 1: Cross Partial Derivative Equality}
+\begin{itemize}
+    \item Use the wonderful square on $C^2$ f: Let $\Delta(h) = f(x+h,y+h) + f(x,y) - f(x+h,y) - f(x,y+h)$, where $h \neq 0$, and $h$ is sufficiently small so that each point of the square is in the domain,
+        \[f(x+h,y+h) - f(x,y+h) - (f(x+h,y) - f(x,y)) = f(x+h,y+h) - f(x+h,y) - (f(x,y+h) - f(x,y))\]
+        Each pair can be redefined as a $C^1$ function of just the changing variable, so MVT applies, with $\theta_j \in (0,1)$,
+        \[h f'_x(x+\theta_1h,y+h) - h f'_x(x+\theta_2h,y) = h f'_y(x+h,y+\theta_3h) - h f'_y(x,y+\theta_4h)\]
+        Divide by h, take limits, do the same,
+        \[h f''_{yx} (x,y+\theta_5h) = h f''_{xy} (x+\theta_6h,y)\]
+        Arrive at:
+        \[f''_{yx} (x,y) = f''_{xy} (x,y)\]
+    \item The same general property is true for higher-order partials, since swaps of consecutive elements allows any permutation of a sequence to be reached, and enough smoothness ensures that every swap happens to a $C^2$ function
+        \[f \in C^k \land i,j \text{ are permutations } \Rightarrow f^{(k)}_{x_{i_k},x_{i_{k-1},\hdots,x_{i_2},x_{i_1}}} (\vec{x}) = f^{(k)}_{x_{j_k},x_{j_{k-1},\hdots,x_{j_2},x_{j_1}}} (\vec{x})\]
+\end{itemize}
+
+\subsection{Feb 5: Taylo$\R^sn$ Theorem}
+\begin{itemize}
+    \item Armed with the mighty multi-index, attempt to state Taylor's Theorem for multivariate scalar functions $f:D \in \R^d \rightarrow \R$:
+        \[f(\vec{a} + \vec{h}) = \! \! \! \! \sum_{\stack{|\alpha| \leq k}{\dim(\alpha) = d}} \! \! \! \! \frac{(\del^\alpha f)(\vec{a})}{\alpha!} \vec{h}^{(\alpha)} + (R^\vec{a}_k f)(\vec{h})\]
+\end{itemize}
+
+\subsection{Feb 6: Directional Derivatives}
+\begin{itemize}
+    \item Derivatives with a direction!
+        \[(D_\vec{u} f)(\vec{p}) = f'_{\vec{u}}(\vec{p}) = \lim_{h \rightarrow 0} \frac{f(\vec{p} + h\vec{u}) - f(\vec{p})}{h}\]
+        The intuitive definition of the direction vector dotted with the gradient only works with $|\vec{u}| = 1$, otherwise scale it to represent velocity
+    \item A useful relation immediately derived from the intuitive definition:
+        \[\vec{\nabla} f(\vec{p}) \cdot \vec{u} = \sum_{j=1}^d u_j \frac{\del f}{\del p_j} (\vec{p}) = f'_\vec{u} (\vec{p})\]
+    \item From CS, the machine-learning concept of steepest descent can be understood through gradients; as the cosine of the angle between $\vec{u}$ and $\vec{\nabla}$ increases, the directional derivative gets closer to $|\vec{\nabla}|$:
+        \[\max_{|\vec{u}| = 1} f'_\vec{u} (\vec{p}) = |\vec{\nabla} f (\vec{p})| \text{ attained iff } \vec{u} = \frac{\vec{\nabla} f (\vec{p})}{|\vec{\nabla} f (\vec{p})|}\]
+        A gradient is now easily seen to be normal to the level sets, or isovalues, where it is computed.
+\end{itemize}
+
+\subsection{Feb 7: Directional Directional Derivatives Derivatives}
+\begin{itemize}
+    \item What about $f''_{\vec{u}\vec{u}}$ ? 
+        \[f'_\vec{u} = (\vec{\nabla} f)(\vec{p}) \Cdot \vec{u} = \sum_{j = 1}^d u_j \cdot \frac{\del f}{\del x_j} (\vec{p})\]
+        \[f''_{\vec{u}\vec{u}} = (\vec{\nabla} ((\vec{\nabla} f) \cdot \vec{u}))(\vec{p}) \cdot \vec{u} = \sum_{i = 1}^d u_j \frac{\del}{\del x_i} \left(\sum_{j = 1}^d u_j \frac{\del f}{\del x_j} (\vec{x})\right) (\vec{p})\]
+        \[= \sum_{i = 1}^d \sum_{j = 1}^d u_i u_j \frac{\del^2 f}{\del x_i \del x_j}\]
+        This definition is easily extensible to higher-order directional derivatives all in one direction! It is also equivalent to the more compact, but more cryptic,
+        \[= (\vec{u} \cdot \vec{\nabla})(\vec{u} \cdot \vec{\nabla}) f\]
+        \[= \vec{u}^T \mat{H_f} (\vec{p})\]
+\end{itemize}
+
+\subsection{Feb 10: Multinomial Proofs}
+\begin{itemize}
+    \item Define $\sigma(\vec{x}) = \sum x_k$
+    \item By induction on the dimension of the vector $\vec{x}$:
+    \item Base Case:
+        \[d = 2, \text{ equivalent to the Binomial Theorem, which is considered trivial}\]
+    \item Inductive Step:\\
+        By the Binomial Theorem,
+        \[(\sigma(\vec{x}) + y)^n = \sum_{j = 0}^n \frac{n!}{j!(n-j)!} (\sigma(\vec{x}))^j y^{n-j}\]
+        Assume the multinomial theorem for $d = n$
+        \[= \sum_{j = 0}^{n} \frac{n!}{j!(n-j)!} \sum_{|\alpha| = j} \frac{j!}{\alpha!} \vec{x}^\alpha y^{n-j} = \sum_{j = 0}^n \sum_{|\alpha| = j} \frac{n!}{(n-j)!\alpha!} \vec{x}^d y^{n-j}\]
+        Let $\beta = (\alpha,n-j)$, then there is a bijection from $\alpha, n$ to $\beta$
+        \[= \sum_{|\beta| = n} \frac{n!}{\beta!} (\vec{x},y)^\beta\]
+    \item Functional multinomials are interpreted differently but obey a similar relationship, as from earlier:
+        \[(\vec{h} \cdot \vec{\nabla})^n = \sum_{|\alpha| = n} \frac{n!}{\alpha!} \vec{h}^\alpha \del^\alpha\]
+\end{itemize}
+
+\subsection{Feb 11: A Tense Tactical Retreat; One Index was Actually Enough!}
+\begin{itemize}
+    \item Multi-indexes are hard, retreat to (obviously easier to understand) tensors:
+        \[f(\vec{a} + \vec{h}) = \sum_{j = 0}^k \frac{f^{(j)} (\vec{a})}{j!} \vec{h}^{\otimes j} + (R_k^\vec{a} f)(\vec{h})\]
+    The same limit on the remainder must apply
+    \item $\vec{h}^{\otimes n}$ is the n-th tensor power of $\vec{h}$, or the n-tensor with entries $h_{i_1} h_{i_2} \hdots h_{i_n}$
+    \item $f^{(n)}(\vec{a})$ is harder to materialize; it is the n-tensor with entries $\frac{\del^j f}{\del x_{i_n} \hdots \del x_{i_2} \del x_{i_1}}$
+    \item The tensor contraction is equivalent to sifting out the terms of a sum where corresponding indices are equal:
+        \[\frac{f^{(j)} (\vec{a})}{j!} \vec{h}^{\otimes j} = \! \! \! \! \! \! \! \! \! \! \! \! \! \! \! \!  \sum_{i_1,i_2,\hdots,i_j,l_1,l_2,\hdots,l_j = 1}^d \left( \prod_{m = 1}^j h_{i_m} \right) \left(\frac{\del f^{(j)}}{\del x_{l_j} \hdots \del x_{l_2} \del x_{l_1}}\right) \left( \prod_{m = 1}^{j} \delta_{i_m j_m}\right)\]
+        \[= \sum_{i_1,i_2,\hdots,i_j}^d \prod_{m = 1}^j h_{i_m} \frac{\del f}{\del x_{i_m}}\]
+\end{itemize}
+
+\subsection{Feb 12: Sift Sift Sift}
+\begin{itemize}
+    \item A alternate, but non-extensible way to represent the second Taylor term is:
+        \[\vec{h}^T (\mat{H_f}) (\vec{a}) \vec{h}\]
+        \[= \begin{bmatrix}
+            h_1 & h_2 & \hdots & h_d
+        \end{bmatrix}
+        \begin{bmatrix}
+            f_{x_1 x_1} & f_{x_1 x_2} & \hdots & f_{x_1 x_d}\\
+            f_{x_2 x_1} & f_{x_2 x_2} & \hdots & f_{x_2 x_d}\\
+            \vdots      & \vdots      & \ddots & \vdots\\
+            f_{x_d x_1} & f_{x_d x_2} & \hdots & f_{x_d x_d}\\
+        \end{bmatrix}
+        \begin{bmatrix}
+            h_1\\
+            h_2\\
+            \vdots\\
+            h_d
+        \end{bmatrix}\]
+        \[= \begin{bmatrix}
+        \displaystyle \sum_{i=1}^d f_{x_i x_1} h_i & \displaystyle \sum_{i=1}^d f_{x_i x_2} h_i & \hdots & \displaystyle \sum_{i=1}^d f_{x_i x_d} h_i
+        \end{bmatrix}
+        \begin{bmatrix}
+            h_1\\
+            h_2\\
+            \vdots\\
+            h_d
+        \end{bmatrix}
+        =\sum_{i,j = 1}^d f_{x_i x_j} h_i h_j = f''(\vec{a}) \vec{h}^{\otimes 2}\]
+\end{itemize}
+
+\subsection{Feb 13: Quadratizing}
+\begin{itemize}
+    \item Let $f: D \in \R^d \overset{C^3}{\rightarrow} \R$, with a critical point at $\vec{a}$. The Taylor series is now
+        \[f(\vec{a}+\vec{h}) = f(\vec{a}) + 0 + \vec{h^T}(\mat{H_f})(\vec{a})\vec{h} + \ep \]
+    \item Every square matrix has an associated quadratic form, or the sum of all quadratic terms that is like the tensor contration: 
+        \[Q_\mat{A}(\vec{h}) = \vec{a^T}\mat{A}\vec{a} = \sum_{i,j}^d \mat{A}_{ij} h_i h_j\]
+    This can be divided into the pure and cross terms, which when applied to the Hessian results in the two types of second partials:
+        \[= \sum_{i}^d \mat{A}_{ii} h_i^2 + 2 \sum_{i<j}^d \mat{A}_{ij} h_i h_j\]
+    \item Scaling either part of a quadratic form proceeds simply:
+        \[Q_{c\mat{A}} = cQ_\mat{A} \quad \quad Q_\mat{A} (c\vec{a}) = c^2 Q_\mat{A} (\vec{a})\]
+    \item A symmetric non-zero square matrix can be classified on its definiteness:
+        \begin{itemize}
+            \item A positive or negative definite matrix has a quadratic form that is positive or negative for all $\vec{a}$, and has all positive or negative eigenvalues
+            \item A positive or negative semidefinite matrix has a quadratic form that is not positive or not negative for all $\vec{a}$, and is zero for some $\vec{a}$; zero is some of its eigenvalues, and the rest are positive or negative
+            \item An indefinite matrix has a quadratic form that takes both signs, and its eigenvalues do too
+        \end{itemize}
+    \item The second derivative test can also now be stated in terms of definiteness. If $\mat{H_f}$ is positive or negative definite, there is a local minimum or maximum; an indefinite $\mat{H_f}$ indicates a saddle point. A semidefinite matrix is inconclusive.
+    \item There is a simple justification, for a positive definite Hessian,
+        \[f(\vec{a} + \vec{h}) = f(\vec{a}) + 0 + D + \ep\]
+        D is always positive, and $\ep$ is subsumed by it, so any displacement results in a higher value. A negative definite is essentially the same, but D is always negative; an indefinite matrix necessarily means changes in both directions with any displacement. A semidefinite matrix means that along some directions, $\ep$ prevails, meaning that the sign is hard to determine.
+\end{itemize}
+
+\subsection{Feb 14: Definitely Indefinite}
+\begin{itemize}
+    \item Notation is man's best friend! Definiteness can be symbolized nicely as:
+        \[\mat{A} \succ 0 \quad \quad \mat{A} \succcurlyeq 0 \quad \quad \mat{A} \prec 0 \quad \quad \mat{A} \preccurlyeq 0 \quad \quad \mat{A} \asymp 0\]
+        The meanings are quite obvious, really.
+    \item How is the definiteness of a matrix actually determined?  Larger $n\times n$ matrices are much better determined by Sylvester's Criterion: take the determinant of each upper-left square submatrix. The $n$ determinants determine the definiteness just like the quadratic form in a weird way, except only finite values need to be checked!
+\end{itemize}
+
+\subsection{Feb 24: Shackles}
+\begin{itemize}
+    \item The essential point of the argument linking definiteness to extrema:
+        \[(\forall \mat{A})(\exists \alpha, \beta)(\forall \vec{h})\left( \alpha|\vec{h}|^2 \leq |Q_\mat{A}(\vec{h})| \leq \beta |\vec{h}|^2 \right)\]
+        Factor out $|\vec{h}|^2$ from all expressions:
+        \[\alpha \leq \left| \frac{\vec{h}^T}{|\vec{h}|} \mat{A} \frac{\vec{h}}{|\vec{h}|} \right| \leq \beta\]
+        Rename the unit vector in the direction of $\vec{h}$, $\vec{u}$
+        \[\alpha \leq |Q_\mat{A} (\vec{u})| \leq \beta\]
+        The quadratic form of a matrix is continuous to the vector, and $\vec{u}$ resides in a compact set. By EVT, the output is bounded!
+        \[\alpha = \min_{\vec{u} \in S^d_1} |Q_\mat{A} (\vec{u})| \quad \quad \beta = \max_{\vec{u} \in S^d_1} |Q_\mat{A} (\vec{u})|\]
+        If the matrix is definite, then $\alpha > 0$, since the absolute value of a non-zero is positive. Otherwise, $\alpha = 0$
+\end{itemize}
+
+\subsection{Feb 25: Sylvester}
+\begin{itemize}
+    \item Analyzing the quadratic form need only be done for symmetric matrices. Take $\mat{A}$ to be $\begin{bmatrix}
+        a & b\\
+        c & d
+        \end{bmatrix}$
+        \[Q_\mat{A} (x,y) = ax^2 + 2 \left( \frac{b+c}{2} \right) xy + dy^2 = Q_\mat{B}(x,y)\]
+    where $\mat{B} = \begin{bmatrix}
+        a & \frac{b+c}{2}\\
+        \frac{b+c}{2} & d
+    \end{bmatrix}$\\
+    This proof obviously will not work out for higher matrices. Let $\mat{B} = \frac{\mat{A} + \mat{A^T}}{2}$,
+        \[Q_\mat{B} (\vec{h}) = \vec{h^T} \mat{B} \vec{h} = \vec{h^T} \frac{\mat{A} + \mat{A}^T}{2} \vec{h} = \frac{\vec{h^T} \mat{A} \vec{h}}{2} + \frac{\vec{h^T} \mat{A^T} \vec{h}}{2}\]
+    Establish the simple equalities:
+        \[(\vec{h^T} \mat{A^T} \vec{h})^T = \vec{h^T} \mat{A^T} \vec{h}\]
+        Because a scalar is its own transpose
+        \[(\vec{h^T} \mat{A^T} \vec{h})^T = \vec{h^T} \mat{A} \vec{h}\]
+        By the properties of the transpose of a matrix product
+        \[\frac{\vec{h^T} \mat{A} \vec{h}}{2} + \frac{\vec{h^T} \mat{A^T} \vec{h}}{2} = \vec{h^T} \mat{A} \vec{h} = Q_\mat{A} (\vec{h})\]
+    \item The Sylvester criterion for a $2\times 2$ matrix: \[B \succ 0 \Rightarrow \det a > 0 \land \det B > 0\]
+        \[Q_\mat{A}(x,y) = ax^2 + 2bxy + cy^2\]
+        If $y = 0$, then the expression collapses to $ax^2$, which is easy to analyze
+        \[= y^2\left(a \left( \frac{x}{y} \right)^2 + 2b \frac{x}{y} + c \right)\]
+        If $a = 0$, then the expression is linear and analyzed separately
+        \[= a y^2\left( \left( \frac{x}{y} \right)^2 + \frac{2b}{a} \frac{x}{y} \right) + y^2(c)\]
+        Complete the square,
+        \[= a y^2\left( \left( \frac{x}{y} \right)^2 + \frac{2b}{a} \frac{x}{y} + \left(\frac{b}{a}\right)^2  \right) + y^2(c - \frac{b^2}{a}) = y^2 \left( a \left(\frac{x}{y} + \frac{b}{a}\right)^2 + \frac{\det B}{a} \right)\]
+        For this result to always be positive, with a bit of casework, the criterion is shown to be true. For the negative definite case, simply negate $\det a$
+    \item Extended to higher matrices, the $n^{th}$ principal submatrix determinant must be always positive for a positive definite matrix, and negative for odd $n$ and positive for even $n$ for a negative definite matrix
+    \end{itemize}
+    
+\subsection{Feb 26: Eigenthings}
+\begin{itemize}
+    \item Eigenvectors are characteristics of a linear transformation. For these vectors, the transformation will be equivalent to scaling by a complex number; the number is the associated eigenvalue
+    \item Interestingly, a symmetric real matrix is guaranteed to have only real eigenvalues, making this character even better when visualized!
+    \item These eigenvalues $\lambda_n$ are elements of the spectrum of the matrix, $\sigma(\mat{A})$, and the eigenvectors of each eigenvalue are elements of the specific eigenspace $E_\lambda (\mat{A})$
+    \item The Spectral Theorem asserts that a symmetric real matrix is diagonalizable in a different basis, with the only non-zero entries being the eigenvalues on the principal diagonal. This is fantastic for finding the quadratic form, since the principal diagonal terms are all squares!
+        \[Q_\mat{A} (\vec{h}) = \lambda_1 u_1^2 + \lambda_2 u_2^2 + \hdots + \lambda_d u_d^2\]
+        \[\vec{u} = \mat{C}\vec{h}\]
+        C is the transformation that represents the change in basis
+    \item Another method for finding definiteness, given the eigenvalues is possible. If all are of one sign, then the matrix is definite; if all are of one sign except for a zero somewhere, then the matrix is semidefinite; if some are negative and some are positive, then the matrix is indefinite. 
+\end{itemize}
+
+\subsection{Feb 27: Eigenspaces}
+\begin{itemize}
+    \item The eigenspace can be restricted to real vectors only, so only the eigenvectors that are also real count: $E^\R_\lambda$
+    \item If there is a real $\lambda$, even with a complex vector, then $E^\R_\lambda$ is not the trivial space:
+        \[\mat{A}\vec{v} = \lambda\vec{v}\]
+        \[\mat{A}(\vec{x} + i\vec{y}) = \lambda(\vec{x} + i\vec{y})\]
+        \[\mat{A}\vec{x} + i\mat{A}\vec{y} = \lambda\vec{x} + i\lambda\vec{y}\]
+        \[\mat{A}\vec{x} = \lambda\vec{x} \land \mat{A}\vec{y} = \lambda\vec{y} \land (\vec{x} \neq 0 \lor \vec{y} \neq 0)\]
+    \item The condition of an eigenvalue is equivalent to $(\lambda \mat{I} - \mat{A})\vec{v} = 0$, and this turns out to imply that $(\lambda \mat{I} - \mat{A})$ is noninvertible,
+        \[(\lambda \mat{I} - \mat{A})^{-1} (\lambda \mat{I} - \mat{A}) \vec{v} = (\lambda \mat{I} - \mat{A})^{-1} 0\]
+        \[\vec{v} = 0\]
+        This is contradictory to the condition!
+    \item The characteristic polynomial of $\mat{A}$ is $\det (t \mat{I} - \mat{A})$ for each $t$, and this has at most degree $d$
+        \[P_\mat{A}(t) = \det (t \mat{I} - \mat{A}) =
+        \begin{vmatrix}
+        t - a_{11} & - a_{12} & \hdots & - a_{1d}\\
+        - a_{21} & t - a_{22} & \hdots & - a_{2d}\\
+        \vdots & \vdots & \ddots & \vdots\\
+        - a_{d1} & - a_{d2} & \hdots & t - a_{dd}
+        \end{vmatrix}\]
+        The determinant is just the sum of all elementary products, and the maximum degree attained is when the principal diagonal is selected. There are no products with degree $d-1$, since swaps can't perturb only one element. Substitute $0$ for $t$ to find the constant term.
+        \[P_A(t) = t^d - (\text{tr } \mat{A})t^{d-1} + \hdots + (-1)^d \det \mat{A}\]
+        The other terms are, unfortunately, very complicated. The trace of $\mat{A}$ is the sum of the principal entries
+    \item From its definition, the roots of the characteristic polynomial are the eigenvalues, which leads to the fact that the determinant is the product of the eigenvalues, and that the trace is the sum of of the eigenvalues
+\end{itemize}
+
+\subsection{Feb 28: Numbers Time!}
+\begin{itemize}
+    \item It is finally time again!
+        \[\mat{A} = \begin{bmatrix}
+            -1 & 3\\
+            2 & 0
+        \end{bmatrix}\]
+        Find the eigenvalues!
+        \[P_\mat{A}(t) = \det (t\mat{I} - \mat{A}) = 
+        \begin{vmatrix}
+            t+1 & -3\\
+            -2 & t
+        \end{vmatrix} = t^2+t+6 = (t+3)(t-2)\]
+        \[\lambda_1 = -3, \lambda_2 = 2\]
+        Find the eigenspaces!
+        \[\begin{bmatrix}
+            2\mat{I} - \mat{A} \, | \, 0
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            3 & -3 & 0\\
+            -2 & 2 & 0
+        \end{bmatrix} \rightarrow
+        \begin{bmatrix}
+            1 & -1 & 0\\
+            -2 & 2 & 0
+        \end{bmatrix} \rightarrow
+        \begin{bmatrix}
+            1 & -1 & 0\\
+            0 & 0 & 0
+        \end{bmatrix}\]
+        The $2-$eigenspace has basis $(1,1)$
+        \[\begin{bmatrix}
+            -3\mat{I} - \mat{A} \, | \, 0
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            -2 & -3 & 0\\
+            -2 & -3 & 0
+        \end{bmatrix} \rightarrow
+        \begin{bmatrix}
+            2 & 3 & 0\\
+            0 & 0 & 0
+        \end{bmatrix}\]
+        The $-3-$eigenspace has basis $(3,-2)$
+    \item To graphically transform any vector, simply change the basis into the eigenspaces. The transformation's effect on the eigenvectors is much easier to see, then at the end change the basis back
+    \item How about a matrix that graphically rotates every single line? Use the counterclockwise $90$ degree matrix:
+        \[\mat{A} = \begin{bmatrix}
+            0 & -1\\
+            1 & 0
+            \end{bmatrix}\]
+        \[P_\mat{A}(t) = t^2 + 1 = (t+i)(t-i)\]
+        \[\lambda_1 = i, \text{basis } E_i = (i,1), \lambda_2 = -i, \text{basis } E_{-i} = (1,i)\]
+        The eigenspaces are complex, so clearly drawing the transformation on the real plane would not reveal the eigenspaces!
+    \item What about $3\times3$ matrices? Any one must have an axis of rotation with eigenvalue 1, intuitively. Because the degree of the characteristic polynomial is odd, one real root must exist, and it will be $1$.
+\end{itemize}
+
+\subsection{Mar 2: Back to Spectra}
+\begin{itemize}
+    \item Lofty goals with a symmetric real square matrix:
+    \begin{itemize}
+        \item All eigenvectors are real
+        \item All real eigenspaces are orthogonal
+        \item The real eigenspaces together can form an ON, or orthonormal, basis of $\R^d$
+    \end{itemize}
+    \item Expanding an arbitrary vector in an ON basis is very easy; a few establishing steps are required! 
+    \begin{itemize}
+        \item An ON basis is linearly independent:
+            \[\mat{A}\vec{t} = 0\]
+            \[\vec{a_1} \Cdot (\vec{a_1}t_1 + \vec{a_2}t_2 + \hdots) = 0\]
+            \[\vec{a_1}\Cdot\vec{a_1}t_1 + 0 + 0 + \hdots = 0\]
+            \[\cancel{|\vec{a_1}|^2} t_1 = 0\]
+            \[\vec{t} = 0\]
+        \item Then $\vec{a_n}$ will span $\R^d$. 
+            \[\vec{v} = \sum t_i \vec{a_i}\]
+            \[\vec{a_1} \Cdot \vec{v} = \cancel{|\vec{a_1}|^2} t_1 + 0 + 0 + \hdots\]
+            \[t_i = \vec{v} \Cdot \vec{a_i}\]
+        \item The components are now easily found. Now, substitute them into the expansion:
+            \[\vec{v} = (\vec{v} \Cdot \vec{a_1})\vec{a_1} + (\vec{v} \Cdot \vec{a_2})\vec{a_2} + \hdots\]
+            \[= \vec{a_1}(\vec{a_1^T} \vec{v}) + \vec{a_2}(\vec{a_2^T} \vec{v}) + \hdots\]
+            \[= (\vec{a_1}\vec{a_1^T} + \vec{a_2}\vec{a_2^T} + \hdots)\vec{v}\]
+            \[\mat{I} = \vec{a_1}\vec{a_1^T} + \vec{a_2}\vec{a_2^T} + \hdots\]
+            The reason for this is surprisingly simple. Consider just one transformation represented as $\vec{a}\vec{a^T}$:
+            \[\vec{v} \mapsto \vec{a}\vec{a^T}\vec{v} = (\vec{v} \Cdot \vec{a})\vec{a} = |\vec{v}|\cancel{|\vec{a}|}\cos\measuredangle(\vec{v},\vec{a})\vec{a}\]
+            This is just the projection of $\vec{v}$ on $\vec{a}$!
+        \item As more $\vec{a}\vec{a^T}$ terms are summed together in the transformation, the projection becomes onto the plane spanned by the two vectors, then the 3-space, ..., eventually the projection of $\vec{v}$ on the space it resides in is reached, and that is just $\vec{v}$, so the transformation is the identity
+        \end{itemize}
+    \item Expanding in a non-ON basis is harder:
+        \[\vec{v} = \mat{A}\vec{t}\]
+        \[\mat{A^{-1}}\mat{v} = \mat{A^{-1}}\mat{A}\mat{t}\]
+        The requirement of an inverse matrix makes the task very complicated
+\end{itemize}
+
+\subsection{Mar 3: Still on Spectra}
+\begin{itemize}
+    \item An equivalent statement of the Spectral Theorem for real symmetric $\mat{A}$ is:
+        \[\text{There are $d$ real eigenvalues, possibly repeating}\]
+        \[\lambda_i \neq \lambda_j \Rightarrow E_{\lambda_i}^\R \perp E_{\lambda_j}^\R\]
+        \[\dim (E_{\lambda_i}^\R) = m(\lambda_i), \text{ where $m$ represents multiplicity}\]
+    \item The Gram-Schmidt Process is an algorithm that takes $d$ linearly independent vectors spanning $\R^d$, rotates them to be orthogonal, and then rescales to normality, with the ending ON vectors still spanning $\R^d$, so they are an ON basis
+    \item From this, each eigenspace has an ON basis. Take the union of all the bases; since all the eigenspaces are orthogonal, all the vectors will be too. They are also obviously all normal. Each multiple of an eigenvalue has one vector associated, and there are necessarily $d$ multiples, so there will be $d$ vectors, all ON, which now must be a basis of $\R^d$. Equivalently, $\vec{v_i} \Cdot \vec{v_j} = \delta_{ij}$
+    \item A great theorem concerning square matrices whose columns are all ON:
+        \[[\mat{S^T}\mat{S}]_{ij} = \sum_{l} [\vec{v_i}]_l[\vec{v_j}]_l = \vec{v_i} \Cdot \vec{v_j} = \delta{ij}\]
+        \[\mat{S^T}\mat{S} = \mat{I}\]
+        The inverse of $\mat{S}$ must exist, since taking determinants on both sides gives $\det \mat{S}^2 = 1$, and there is only one matrix it can be!
+        \[\mat{S^T} = \mat{S^{-1}}\]
+\end{itemize}
+
+\subsection{Mar 5*: More Numbers Time}
+\begin{itemize}
+    \item Let $\mat{A} = \begin{bmatrix}
+        4 & 2 & 2\\
+        2 & 4 & 2\\
+        2 & 2 & 4
+    \end{bmatrix}$
+    \item The characteristic polynomial:
+        \[P_\mat{A}(t) = t-4(t^2 - 8t + 16 - 4) + 2(-2t + 8 - 4) - 2(4 + 2t - 8)\]
+        \[= t^3 - 12t^2 + 36t - 32\]
+        \[= (t-2)(t-2)(t-8)\]
+    Thus the eigenvalues are $\{2,8\}$
+    \item Bases of the eigenspaces:
+        \[E^\R_2: \begin{bmatrix}
+            -2 & -2 & -2 & 0\\
+            -2 & -2 & -2 & 0\\
+            -2 & -2 & -2 & 0
+        \end{bmatrix} \rightarrow 
+        \begin{bmatrix}
+            1 & 1 & 1 & 0\\
+            0 & 0 & 0 & 0\\
+            0 & 0 & 0 & 0
+        \end{bmatrix}\]
+        One basis is $\{(1,-1,0),(-1,1,0)\}$
+        \[E^\R_8: \begin{bmatrix}
+            4 & -2 & -2 & 0\\
+            -2 & 4 & -2 & 0\\
+            -2 & -2 & 4 & 0
+        \end{bmatrix} \rightarrow
+        \begin{bmatrix}
+            4 & -2 & -2 & 0\\
+            -2 & 4 & -2 & 0\\
+            0 & -6 & 6 & 0
+        \end{bmatrix} \rightarrow
+        \begin{bmatrix}
+            2 & -1 & -1 & 0\\
+            0 & 3 & -3 & 0\\
+            0 & -2 & 2 & 0
+        \end{bmatrix} \rightarrow
+        \begin{bmatrix}
+            2 & -1 & -1 & 0\\
+            0 & 1 & -1 & 0\\
+            0 & 0 & 0 & 0
+        \end{bmatrix}
+        \]
+        One basis is $\{(1,1,1)\}$
+    \item Not coincidentally, the multiplicity of the eigenvalue determines the dimension of its eigenspace
+    \item Gram-Schmidt Processing:
+        \[E^\R_2: (1,-1,0)\Cdot(x,y,-x-y) = 0 = x - y \Rightarrow (1,1,-2)\]
+        \[\{(1,-1,0),(1,1,-2)\} \overset{|\vec{v}| = 1}{\Rightarrow} \left\{\left(\frac{1}{\sqrt{2}},\frac{-1}{\sqrt{2}},0\right),\left(\frac{1}{\sqrt{6}},\frac{1}{\sqrt{6}},\frac{-2}{\sqrt{6}}\right)\right\}\]
+        \[E^\R_8: \{(1,1,1)\} \overset{|\vec{v}| = 1}{\Rightarrow} \left\{\left(\frac{1}{\sqrt{3}},\frac{1}{\sqrt{3}},\frac{1}{\sqrt{3}}\right)\right\}\]
+    \item These three vectors serve as an ON basis of $\R^d$!
+\end{itemize}
+
+\subsection{Mar 6*: 0}
+\begin{itemize}
+    \item Idleness is simply the opposite of labor, not the opposite of work!
+\end{itemize}
+
+\subsection{Mar 9: Numbers Review!}
+\begin{itemize}
+    \item The problem was reviewed
+\end{itemize}
+
+\subsection{Mar 10: Fake Projectors}
+\begin{itemize}
+    \item Projection on a $1$-space $l$ is simple enough:
+        \[\text{proj}(\vec{v}|\hat{l}) = \vec{p}\]
+        There are two properties of a projection:
+        \[\vec{p} = t\hat{l}\]
+        \[(\vec{v} - \vec{p}) \perp \hat{l}\]
+        Derive from here:
+        \[(\vec{v} - \vec{p})\Cdot \hat{l} = 0\]
+        \[\vec{v} \Cdot \hat{l} - \vec{p} \Cdot \hat{l} = 0\]
+        \[\vec{v} \Cdot \hat{l} = t \hat{l} \Cdot \hat{l}\]
+        \[t = \frac{\vec{v} \Cdot \hat{l}}{|\hat{l}|^2}\]
+        \[\vec{p} = \frac{\vec{v} \Cdot \hat{l}}{|\hat{l}|^2} \hat{l}\]
+    \item This definition is independent from $\hat{l}$, so long as it remains in the same direction
+        \[\frac{\vec{v} \Cdot \hat{l}}{|\hat{l}|^2} \hat{l} = \frac{k^2}{k^2} \frac{\vec{v} \Cdot \hat{l}}{|\hat{l}|^2} \hat{l} = \frac{\vec{v} \Cdot k\hat{l}}{|k\hat{l}|^2} k\hat{l}\]
+    \item What about projection onto higher spaces $S$ with dimension $k \leq d$? It is now convenient to define the altitude vector along with the projection vector:
+        \[\vec{p} = \text{proj} (\vec{v}|S)\]
+        \[\vec{a} = \text{alt} (\vec{v}|S)\]
+        Each pair has the same properties:
+        \[\vec{p} + \vec{a} = \vec{v}\]
+        \[\vec{p} \in S, \vec{a} \perp S\]
+    \item There exists a unique pair for every vector and every space.
+    \item Uniqueness: Assume two pairs existed, $(\vec{p},\vec{a}), (\vec{q},\vec{b})$:
+        \[\vec{p} + \vec{a} = \vec{v} = \vec{q} + \vec{b}\]
+        \[S \ni \vec{p} - \vec{q} = \vec{b} - \vec{a} \perp S\]
+        \[\vec{p} - \vec{q} \perp \vec{p} - \vec{q}\]
+        \[\vec{p} - \vec{q} = 0\]
+    \item Existence: The space $S$ must have an ON basis $\{\vec{u_1},\vec{u_2},\hdots,\vec{u_k}\}$. To find the projection on a higher space, just sum each projection onto the basis vectors:
+        \[\vec{p} = \sum_n \text{proj}(\vec{v}|\vec{u_n})\]
+\end{itemize}
+
+\subsection{Mar 11: Megagram-Schmidt}
+\begin{itemize}
+    \item Every nontrivial $S \subspeq \R^d$ has an ON basis
+    \item Induction on $k = \dim S$, start with $k = 1$, where the space is the span of a single vector $\vec{w}$. The ON basis is simply $\{\frac{\vec{w}}{|\vec{w}|}\}$
+    \item Assume every space of dimension $k-1$, $T$, has an ON basis. Consider $S$, dimension $k$, with some basis:
+        \[\{\vec{v_1},\vec{v_2},\hdots,\vec{v_k}\}\]
+        Let $T$ be the span of the first $k-1$, then those are also a basis of $T$. By assumption, an ON basis of $T$ exists,
+        \[\{\vec{u_1},\vec{u_2},\hdots,\vec{u_{k-1}}\}\]
+    \item The Gram-Schmidt Formula gives a $\vec{u_k}$,
+        \[\vec{u_k} = \frac{\vec{v_k} - \sum_{i=1}^{k-1} (\vec{v_k} \Cdot \vec{u_i})\vec{u_i}}{|\vec{v_k} - \sum_{i=1}^{k-1} (\vec{v_k} \Cdot \vec{u_i})\vec{u_i}|}\]
+    \item This new $\vec{u_k}$ is clearly unitary, but is it orthogonal to the other ON $\vec{u}$?
+        \[\vec{u_k} \Cdot \vec{u_j} = \vec{v_k} \Cdot \vec{u_j}  - \sum_{i=1}^{k-1} (\vec{v_k} \Cdot \vec{u_i}) (\vec{u_i} \Cdot \vec{u_j})\]
+        Sift! The dot product of ON vectors is collapsible:
+        \[= \vec{v_k} \Cdot \vec{u_j}  - (\vec{v_k} \Cdot \vec{u_j}) = 0\]
+        Success! The $\vec{u}$ vectors are ON!
+    \item It remains to be seen whether the $\vec{u}$ vectors are a basis for $S$. The following compound statement suffices:
+        \[S \subseteq \text{span} (\vec{u_1},\vec{u_2},\hdots,\vec{u_k}) \subseteq S\]
+        The first statement; show that each $\vec{u}$ vector is in $S$. The first $k-1$ are in $T \subspeq S$, and the last, from the formula, is a linear combination of $\vec{v_k}$ and $\vec{u}$ vectors\\
+        The second statement:
+        \[\vec{x} \in S = \sum a_i \vec{v_i} = \vec{y} + a_k \vec{v_k} = \sum a_i \vec{u_i} + \ell \vec{u_k} + \sum b_i \vec{u_i} \in \text{span} (\vec{u_1},\vec{u_2},\hdots,\vec{u_k})\]
+\end{itemize}
+
+\subsection{Mar 12: Real Projectors}
+\begin{itemize}
+    \item Review of subspaces! Two special spaces are defined, the trivial space $\vec{0}$ and the entire space $\vec{1}$
+    \item The operators inclusion, $S \subspeq T$, intersection $S \cap T$, and addition $S + T$, are from before, and the unary orthocomplement is
+        \[S^\perp = \{\vec{v} | \vec{v} \perp S\}\]
+        The fundamental inclusion relations:
+        \[\vec{0} \subspeq S \cap T \subspeq S,T \subspeq S + T \subspeq \vec{1}\]
+        The intersection and sum of the two spaces is the nearest space to the two in this inclusion; no spaces are in between
+\end{itemize}
+
+\subsection{Mar 13: in Absentio}
+\begin{itemize}
+    \item Order has begun to break down!
+\end{itemize}
+
+\subsection{Mar 16: The Far Reaches}
+\begin{itemize}
+    \item The start of the illustrious \cancel{YouTube} \cancel{ShowMe} YouTube career of Joseph Stern!
+\end{itemize}
+
+\subsection{Mar 19: Spectral Thm Proved}
+\begin{itemize}
+    \item Orthogonal Matrices are the name for those matrices whose colummns are ON
+    \item The Spectral Thm guarantees too that $\exists \mat{S}$ orthogonal, where $\mat{S^{-1}}\mat{A}\mat{S}$ is the diagonal matrix $\mat{D}$ with the entries the eigenvalues of $\mat{A}$
+    \item Additionally, $\exists$ projector matrices $\mat{P_1},\mat{P_2}, \hdots ,\mat{P_d} : \mat{P_i^2} = \mat{P_i} = \mat{P^T}, \mat{P_i}\mat{P_j} = \mat{P_j}\mat{P_i} = \mat{O}$ when $i \neq j$, and finally, $\mat{A} = \sum_j \lambda_j \mat{P_j}$, the spectral decomposition. The projectors project onto the columns of $\mat{S}$ from above
+    \item To start, tackle $\sigma(\mat{A}) \subseteq \R$ with a complex inner product, like dot products but one factor is conjugated (because of this the associated norm is essentially the same):
+            \[<\vec{v}|\mat{A}\vec{v}>\]
+        This inner product is also the dot product of the adjoint of one vector and the other $\vec{v}^\dagger \vec{w}$, which relies on the definition of the matrix adjoint: $\mat{M^\dagger} = \overline{\mat{M^T}}$
+            \[= \vec{v^\dagger} \mat{A}\vec{v} = \vec{v^\dagger} \lambda\vec{v} = \lambda \vec{v^\dagger}\vec{v} = \lambda |\vec{v}|^2\]
+        Use the associative property and adjoints of products on the expression, though, and get a different expression! Remember $\mat{A}$ is real symmetric
+            \[= \vec{v^\dagger} \mat{A}\vec{v} = (\mat{A^\dagger} \vec{v})^\dagger \vec{v} = (\mat{A}\vec{v})^\dagger \vec{v} = (\lambda \vec{v})^\dagger \vec{v} = \overline{\lambda} |\vec{v}|^2\]
+        The eigenvector is never $0$, then $\lambda = \overline{\lambda}$, and the eigenvalue is real.
+    \item Next target: Orthogonality of distinct real eigenspaces. Let $\vec{v}$ and $\vec{w}$ be elements of the two eigenspaces, and $\lambda$ and $\mu$ the eigenvalues
+            \[<\vec{w}|\mat{A}\vec{v}> = \vec{w^\dagger}\mat{A}\vec{v} = \vec{w^\dagger}\lambda \vec{v} = \lambda (\vec{w}^\dagger \vec{v})\]
+        But also
+            \[\vec{w^t} \mat{A}\vec{v} =  (\mat{A^\dagger}\vec{w})^\dagger \vec{v} = (\mat{A}\vec{w})^\dagger \vec{v} = (\mu \vec{w})^\dagger \vec{v} = \overline{\mu}(\vec{w}^\dagger \vec{v})\]
+        Now, $\lambda <\vec{w}|\vec{v}> = \overline{\mu} <\vec{w}|\vec{v}> = \mu <\vec{w}|\vec{v}>$, but the eigenvalues are assumed to be different! Then the inner product is $0$, the dot product is too (since the vectors are real anyway) and $\vec{w}$ and $\vec{v}$ are orthogonal
+    \item The multiplicity of an eigenvalue in the characteristic polynomial is equal to the dimension of the eigenspace:\\
+        $r$ will stand for $\dim E_\lambda^\R(\mat{A})$, between $1$ and $d$, and from Gram-Schmidt construct a ON basis $\{\vec{u_1}, \vec{u_2}, \hdots, \vec{u_r}\}$ for the eigenspace.\\
+        Extend the basis to the entire space, to $\{\vec{u_1}, \hdots, \vec{u_r}, \vec{u_{r+1}}, \hdots, \vec{u_d}\}$, also ON by Gran-Schmidt. Recall for the early vectors
+            \[\mat{A} \vec{u_i} = \lambda \vec{u_i}\]
+        This is not true for the later $\vec{u}$ vectors anymore, resort to the larger basis;
+            \[\mat{A} \vec{u_i} = \sum_{j=1}^r b_j \vec{u_j} + \sum_{j=r+1}^d c_j \vec{u_j}\]
+        However, ON-ality still gives
+            \[\vec{u_i} \Cdot \vec{u_j}\]
+        Two parts now:  if $a$ is the multiplicity of $\lambda$ as a root, $a \geq r$ and $a \ngtr r$
+\end{itemize}
+
+\subsection{Mar 20: Spectral Thm Proved II}
+\begin{itemize}
+    \item Let $\mat{M}$ be the matrix of ON columns $\vec{u_i}$, it is orthogonal ($\in O(d)$) i.e. $\mat{M^T} = \mat{M^{-1}}$, and proof:
+            \[\mat{M^T}\mat{M} = 
+            \begin{bmatrix}
+                - & \vec{u_1^T} & -\\
+                - & \vec{u_2^T} & -\\
+                 & \vdots &\\
+                - & \vec{u_d^T} & -
+            \end{bmatrix}
+            \begin{bmatrix}
+                | & | &  & |\\
+                \vec{u_1} & \vec{u_2} & \hdots & \vec{u_d}\\
+                | & | &  & |
+                \end{bmatrix} =
+            \begin{bmatrix}
+                \vec{u_1} \Cdot \vec{u_1} &  \vec{u_1} \Cdot \vec{u_2} & \hdots &  \vec{u_1} \Cdot \vec{u_d}\\
+                \vec{u_2} \Cdot \vec{u_1} &  \vec{u_2} \Cdot \vec{u_2} & \hdots &  \vec{u_2} \Cdot \vec{u_d}\\ 
+                \vdots & \vdots & \ddots & \vdots\\
+                \vec{u_d} \Cdot \vec{u_1} &  \vec{u_d} \Cdot \vec{u_2} & \hdots &  \vec{u_d} \Cdot \vec{u_d}\\
+            \end{bmatrix} = \mat{I}\]
+            The other side inverse is only a little more complicated:
+    \item If $\mat{A}\mat{B} = \mat{I}$ and $\mat{A}$ and $\mat{B}$ are square, then $\mat{B}\mat{A} = \mat{I}$.
+        \begin{itemize}
+            \item Let $S$ be the space of $d \times d$ matrices, then $S \supseteq \mat{B}S \supseteq \mat{B^2}S \supseteq \hdots \supseteq \mat{B^k}S \supseteq \hdots$. This is because $\mat{B^{k+1}} \mat{C} = \mat{B^k} \mat{BC}$, and $\mat{BC} \in S$. 
+            \item $S$ is also isomorphic to the $d^2-$vector space, since the operations are essentially the same, so it is possible to say that $\mat{B^k}S$ is a space too. 
+            \item Spaces must have a nonnegative integer dimension, and since there are only $d^2$ in the biggest space, there can only be that many distinct spaces in the progression; $\exists l: \mat{B^l}S = \mat{B^{l+1}}S$
+                \[\mat{B^l} \in \mat{B^l}S = \mat{B^{l+1}}S\]
+                \[\mat{B^l} = \mat{B^{l+1}}\mat{C}\]
+                \[\mat{A^k}\mat{B^k} = \mat{A^k}\mat{B^k}\mat{B}\mat{C}\]
+                \[\mat{I} = \mat{I}\mat{B}\mat{C} = \mat{B}\mat{C}\]
+            \item $\mat{B}$ is square and has one left-inverse and one right-inverse, then both inverses are $\mat{A}$
+        \end{itemize}
+    \item Now that $\mat{M}$ is orthogonal, 
+            \[\mat{A}\mat{M} = 
+            \begin{bmatrix}
+                | &  & | & | &  & |\\
+                \mat{A}\vec{u_1} & \hdots & \mat{A}\vec{u_r} & \mat{A}\vec{u_{r+1}} & \hdots & \mat{A}\vec{u_d}\\
+                | &  & | & | &  & |\\
+            \end{bmatrix} =
+            \begin{bmatrix}
+                | &  & | & | &  & |\\
+                \lambda\vec{u_1} & \hdots & \lambda\vec{u_r} & \mat{A}\vec{u_{r+1}} & \hdots & \mat{A}\vec{u_d}\\
+                | &  & | & | &  & |\\
+            \end{bmatrix}\]
+        Recall that the column space of $\mat{M}$ now represents the entire space,
+            \[= \begin{bmatrix}
+                | &  & | & | &  & |\\
+                \lambda\mat{M}\vec{e_1} & \hdots & \lambda\mat{M}\vec{e_r} & \mat{M}\vec{c_{r+1}} & \hdots & \mat{M}\vec{c_d}\\
+                | &  & | & | &  & |\\
+            \end{bmatrix}
+            = \mat{M}\begin{bmatrix}
+                | &  & | & | &  & |\\
+                \lambda\vec{e_1} & \hdots & \lambda\vec{e_r} & \vec{c_{r+1}} & \hdots & \vec{c_d}\\
+                | &  & | & | &  & |\\
+            \end{bmatrix}\]
+            \[= \mat{M} \begin{bmatrix}
+                \lambda \mat{I_r} & | & \\
+                -- & | & \mat{C}\\
+                \mat{O} & | &  \\
+            \end{bmatrix}\]
+        Now investigate:
+            \[\mat{M^T}\mat{A}\mat{M} = \mat{M^{-1}}\mat{A}\mat{M} = 
+            \begin{bmatrix}
+                \lambda \mat{I_r} & | & \\
+                -- & | & \mat{C}\\
+                \mat{O} & | &  \\
+            \end{bmatrix}\]
+        But also this is a symmetric matrix,
+            \[(\mat{M^T}\mat{A}\mat{M})^\mat{T} = \mat{M^T}\mat{A^T}\mat{M} = \mat{M^T}\mat{A}\mat{M}\]
+            \[ \begin{bmatrix}
+                \lambda \mat{I_r} & | & \\
+                -- & | & \mat{C}\\
+                \mat{O} & | &  \\
+            \end{bmatrix} = 
+            \begin{bmatrix}
+                \lambda \mat{I_r} & | & \mat{O} \\
+                -- & | & -- \\
+                \mat{O} & | & \mat{D} \\
+            \end{bmatrix}\]
+    \item Let $\mat{B} = \mat{M^T}\mat{A}\mat{M}$,
+            \[P_\mat{B} (t) = \det(t\mat{I} - \mat{B})\]
+            \[= \det(t \mat{M^T}\mat{M} - \mat{M^T}\mat{A}\mat{M})\]
+            \[= \det(\mat{M^T} (t\mat{I} - \mat{A}) \mat{M})\]
+            \[= \det \mat{M^T} \det (t\mat{I} - \mat{A}) \det    \mat{M}\]
+        (Determinants distribute over multiplication)
+            \[= P_\mat{A} (t)\]
+        Anytime $\mat{B} = \mat{S^-1}\mat{A}\mat{S}$, then the two matrices are similar and the characteristic polynomials are exactly the same
+\end{itemize}
+
+\subsection{Mar 23: Spectral Thm Proved III (for real)}
+\begin{itemize}
+    \item Return to $P_\mat{B}(t)$
+            \[P_\mat{A}(t) = P_\mat{B}(t) = \det(t\mat{I} - \mat{B})\]
+            \[= \begin{vmatrix}
+                (t  -\lambda) \mat{I_r} & | & \mat{O} \\
+                --- & | & --- \\
+                \mat{O} & | & t\mat{I} -  \mat{D} \\
+            \end{vmatrix}
+            = (t-\lambda)^r \det(t\mat{I} - \mat{D})\]
+            \[P_\mat{A}(t) = (t-\lambda)^r P_\mat{D}(t)\]
+        Then the multiplicity of $\lambda$ is at least $r$ since that many can be factored out, and $a \geq r$
+    \item Now suppose $a > r$, then $\lambda$ is also a root of $P_\mat{D}(t)$, or $P_\mat{D}(\lambda) = 0$, $\lambda \in \sigma(\mat{D})$.
+            \[\exists \R^{d-r} \ni \vec{v} \neq 0 : \mat{D} \vec{v} = \lambda \vec{v}\]
+        Look at $\vec{w} = (0,\vec{v}) \in \R^d$, made by concatenating a zero vector
+            \[\mat{B}\vec{w} = (0,\mat{D}\vec{v}) = (\lambda 0, \lambda \vec{v}) = \lambda \vec{w}\]
+        $\vec{w}$ is another eigenvector of $B$! i.e. $\mat{M^T}\mat{A}\mat{M}\vec{w} = \lambda \vec{w}$\\
+        Let $\vec{z} = \mat{M}\vec{w}$, this is also not $0$,
+            \[\mat{M^T}\mat{A}\mat{M}\vec{w} = \lambda \vec{w}\]
+            \[\cancel{\mat{M}\mat{M^T}}\mat{A}\mat{M}\vec{w} = \mat{M}\lambda\vec{w} = \lambda \mat{M}\vec{w}\]
+        $\vec{z}$ is also an eigenvector of $\mat{A}$, then it is expressible in the basis of the eigenspace,\\
+            \[\vec{z} = \sum_{j=1}^r a_j \vec{u_j}\]
+            \[\vec{w} = \mat{M^{-1}}\vec{z} = \mat{M^T}\vec{z} = \sum_{j=1}^r a_j (\mat{M^T}\vec{u_j})\]
+                The summed terms are no strangers, however:
+            \[[\vec{e_1}, \vec{e_2},\hdots \vec{e_d}] = I = \mat{M^T}\mat{M} = \mat{M^T}[\vec{u_1},\vec{u_2}, \hdots, \vec{u_d}] = [\mat{M^T}\vec{u_1},\mat{M^T},\vec{u_2}, \hdots, \mat{M^T}\vec{u_d}]\]
+            \[\vec{w} = \sum_{j=1}^r a_j \vec{e_j} = (a_1, a_2, \hdots, a_r, 0, 0, \hdots, 0)\]
+        This does not at all satisfy the definition of $\vec{w}$ as $(0,0,\hdots,0,\vec{v})$! Then $a \ngtr r$, or $a = r$
+\end{itemize}
+
+\subsection{Mar 24: Orthogonal Maps}
+\begin{itemize}
+    \item What is the linear transformation of an orthogonal matrix $\mat{M}$? All of the standard basis vectors stay ON, so it is just a rotation and possibly reflection of space, intuitively; now prove it
+    \item To prove centrality: $\mat{M} 0 = 0$; all linear maps are central
+    \item To prove dot-preservation:
+            \[(\mat{M}\vec{v})\Cdot(\mat{M}\vec{w}) = (\mat{M}\vec{v})^\mat{T}(\mat{M}\vec{w}) = \vec{v^T}\cancel{\mat{M^T}\mat{M}}\vec{w} = \vec{v^T}\vec{w} = \vec{v}\Cdot\vec{w}\]
+    \item Using that, to prove isometry:
+            \[|\mat{M}\vec{v}|^2 = (\mat{M}\vec{v}) \Cdot (\mat{M}\vec{v}) = \vec{v} \Cdot \vec{v} = |\vec{v}|^2\]
+            \[|\mat{M}\vec{p} - \mat{M}\vec{q}| = |\mat{M}(\vec{p}-\vec{q})| = |\vec{p}-\vec{q}|\]
+    \item To prove a determinant of unity (or its negative):
+            \[\det \mat{I} = \det (\mat{M^T}\mat{M}) = \det\mat{M^T}\det\mat{M} = (\det\mat{M})^2\]
+        ($\det \mat{A} = \det \mat{A^T}$) $\mat{M}$ can flip the space, or it might not; in this way it is either a rotation or a rotation and a reflection
+\end{itemize}
+
+\subsection{Mar 25: Spectral Thm IV (we'll get them this time!)}
+\begin{itemize}
+    \item The eigenvectors of $\mat{A}$ can make an ON basis of $\R^d$. Start with the characteristic polynomial
+            \[P_\mat{A}(t) = (t-\lambda_1)^{m_1}(t-\lambda_2)^{m_2}\hdots(t-\lambda_k)^{m_k}\]
+        By an earlier part of the Spectral Thm, $m_n$ is also the dimension of each eigenspace
+    \item Now take a list of $d$ eigenvectors, such that each set of $m_n$ eigenvectors forms a ON basis of an eigenspace. Each eigenspace is orthogonal so the whole list is ON and linearly independent. Of course, $d$ linearly independent vectors that all reside in $\R^d$ must also span it!
+    \item $\mat{A}$ is orthogonally diagonalizable. Let $\mat{S}$ have columns the ON basis discovered above. $\mat{S}$ is now orthogonal, and is a convenient change of basis matrix!
+            \[\mat{A}\mat{S} = \begin{bmatrix} \mat{A}\vec{v_1} & \mat{A}\vec{v_2} & \hdots & \mat{A}\vec{v_d} \end{bmatrix}\]
+            \[= \begin{bmatrix} \lambda_1\vec{v_1} & \lambda_2\vec{v_2} & \hdots & \lambda_d\vec{v_d} \end{bmatrix}\]
+            \[= \begin{bmatrix} \lambda_1\mat{S}\vec{e_1} & \lambda_2\mat{S}\vec{e_2} & \hdots & \lambda_d\mat{S}\vec{e_d} \end{bmatrix}\]
+            \[= \mat{S} \begin{bmatrix} \lambda_1\vec{e_1} & \lambda_2\vec{e_2} & \hdots & \lambda_d\vec{e_d} \end{bmatrix}\]
+            \[\mat{A}\mat{S} = \mat{S}\mat{D}\]
+            \[\mat{S^-1}\mat{A}\mat{S} = \mat{D}\]
+        $\mat{D}$ is the fabled diagonal matrix with the elements the eigenvalues of $\mat{A}$ - finally! Since $\mat{S}$ is orthogonal, $\mat{A}$ is further orthogonally diagonalizable.
+    \item $\mat{A}$ is the sum of each projector matrix onto an eigenvector multiplied by its eigenvalue
+            \[\mat{A}\vec{x} = \mat{S}\mat{D}\mat{S^T}\vec{x} = \mat{S} \begin{bmatrix}
+                \lambda_1 \vec{v_1}\Cdot\vec{x}\\
+                \lambda_2 \vec{v_2}\Cdot\vec{x}\\
+                \vdots\\
+                \lambda_d \vec{v_d}\Cdot\vec{x}
+            \end{bmatrix}\]
+            \[= \mat{S}\left( \lambda_1(\vec{v_1}\Cdot\vec{x})\vec{e_1} + \lambda_2(\vec{v_2}\Cdot\vec{x})\vec{e_2} + \hdots
+            \lambda_d(\vec{v_d}\Cdot\vec{x})\vec{e_d}
+            \right)\]
+            \[=\lambda_1(\vec{v_1}\Cdot\vec{x})\vec{v_1} +
+            \lambda_2(\vec{v_2}\Cdot\vec{x})\vec{v_2} +
+            \hdots +
+            \lambda_d(\vec{v_d}\Cdot\vec{x})\vec{v_d}\]
+            \[(\lambda_1\vec{v_1}\vec{v_1^T} + \lambda_2\vec{v_2}\vec{v_2^T} +
+            \hdots +
+            \lambda_d\vec{v_d}\vec{v_d^T})\vec{x}\]
+            \[= (\lambda_1 P(\vec{v_1}) + \lambda_2 P(\vec{v_2}) + \hdots + \lambda_d P(\vec{v_d}))\vec{x}\]
+        \item It is done!
+        \item Now it all comes together, The Principal Axes Thm: Given familiar $\mat{A}$, there exists a rotation $\mat{R}$ such that
+                \[Q_\mat{A}(\vec{x}) = \vec{x^T}\mat{A}\vec{x} = \sum_{j=1}^d \lambda_j [\mat{R}\vec{x}]_j^2 = Q_\mat{D}(\mat{R}\vec{x})\]
+            $Q_\mat{D}(\vec{x})$ is much much much easier to compute than the other quadratic form!
+                \[\vec{x^T}\mat{A}\vec{x} = \vec{x^T}\mat{S}\mat{D}\mat{S^T}\vec{x} = (\mat{S^T}\vec{x})^\mat{T}\mat{D}(\mat{S^T}\vec{x}) = Q_\mat{D}(\mat{S^T}\vec{x})\]
+            If $\mat{S}$ is positively directed, then it is the rotation we are looking for.
+                \[\mat{R^T} = (\mat{S^T})^\mat{T} = (\mat{S^T})^{-1} = \mat{R^{-1}}\]    
+            Otherwise, just modify $\mat{D}$ slightly so that one column swap is performed, then $\mat{S}$ has a column swapped too, and the determinant will be negated. The resultant $\mat{R}$ just has one basis vector swapped with another.
+    \item Lastly, to prove the definiteness arising from eigenvalues; start by converting $Q_\mat{A}(\vec{x})$ to $Q_\mat{D}(\mat{R}\vec{x})$ to $\displaystyle\sum_{j=1}^d \lambda_j [\mat{R}\vec{x}]_j^2$\\
+        If $\vec{x} \neq 0$ then $\mat{R}\vec{x} \neq 0$ by rotation;\\
+        Assuming all the eigenvalues are positive,
+            \[\sum_{j=1}^d \lambda_j [\mat{R}\vec{x}]_j^2 > 0\]
+        All negative,
+            \[\sum_{j=1}^d \lambda_j [\mat{R}\vec{x}]_j^2 < 0\]
+        Some negative and positive,
+            \[\sum_{j=1}^d \lambda_j [\mat{R}\vec{x}]_j^2 \in (-\infty,\infty)\]
+        Not less than $0$ is a bit trickier, let $\lambda_j = 0$
+            \[\vec{x} = \mat{R^T}\vec{e_j} = \mat{R^{-1}}\vec{e_j}\]
+            \[Q_\mat{D}(\mat{R}\vec{x}) = Q_\mat{D}(\vec{e_j}) = \vec{e_j^T}\mat{D}\vec{e_j} = \vec{e_j^T}\lambda_j\vec{e_j} = \lambda_j \cancel{|\vec{e_j}|^2} = 0\]
+            \[\sum_{j=1}^d \lambda_j [\mat{R}\vec{x}]_j^2 \geq 0\]
+        Not greater than $0$,
+            \[\sum_{j=1}^d \lambda_j [\mat{R}\vec{x}]_j^2 \leq 0\]
+\end{itemize}
+
+\subsection{Mar 30: Back to Sylvester}
+\begin{itemize}
+    \item To reiterate, positive definite matrices have all subdeterminants positive, negative definite matrices have negative-positive alternating subdeterminants, indefinite matrices have subdeterminants that are almost like definite matrices, but the first subdeterminant that messes up the pattern has the wrong sign, and semidefinite matrices are the rest, i.e. when the first deviant subdeterminant is zero.
+    \item In the $2\times2$ case, a negative determinant always implies indefiniteness, and a zero determinant implies semidefiniteness
+    \item Positive definiteness:
+            \[P_\mat{A}(t) = t^2 - (a + c)t + ac - b^2\]
+            \[\lambda = \frac{a+c \pm \sqrt{a^2 + 2ac + c^2 - 4ac + 4b^2}}{2}\]
+            \[= \frac{a + c \pm \sqrt{(a-c)^2 + 4b^2}}{2}\]
+        Symmetry grants the discriminant positiveness. For both eigenvalues to be the same, $a = c$ and $b = 0$, making the whole matrix $a\mat{I}$, or a uniform scaling\\
+        Consider eigenvalue signs: Positive definiteness requires the lesser eigenvalue be positive:
+            \[\sqrt{(a-c)^2 + 4b^2} < a+c \Rightarrow\]
+            \[\nLeftarrow (a-c)^2 + 4b^2 < (a+c)^2\]
+            \[\cancel{4}b^2 < \cancel{4}ac\]
+            \[ac - b^2 > 0\]
+        The complete reverse requires an additional condition
+            \[(a-c)^2 + 4b^2 < (a+c)^2 \Rightarrow \sqrt{(a-c)^2 + 4b^2} < |a+c| \underset{(ac \geq 0)}{\overset{a > 0}{\Rightarrow}} \sqrt{(a-c)^2 + 4b^2} < |a+c| < a+c\]
+        Negative definiteness is the same
+    \item Indefiniteness requires that the eigenvalues take opposite signs
+            \[-\sqrt{(a-c)^2 + 4b^2} < a+c < \sqrt{(a-c)^2 + 4b^2}\]
+            \[\sqrt{(a-c)^2 + 4b^2} > |a+c|\]
+        Simply follow from the above case, except with switched inequality
+    \item It's Numbers time again!
+        \[f(x,y) = 3x^2 + y^2 - x + 4y - 5\]
+        \[\vec{\nabla} f = 0 = (6x - 1,2y + 4)\]
+        \[\text{Critical point at } (\frac{1}{6},-2)\]
+        \[\mat{H} = 
+        \begin{bmatrix} 
+        6 & 0\\
+        0 & 2\\
+        \end{bmatrix}
+        \]
+        \[\det \mat{H} > 0\]
+        The critical point represents a minimum
+        \[g(x,y) = 2x^2 + y^2 - 3xy + x + 2y + 4\]
+        \[\vec{\nabla} g = 0 = (4x - 3y + 1, 2y - 3x + 2)\]
+        \[\begin{bmatrix}
+        4 & -3 & -1\\
+        -3 & 2 & -2
+        \end{bmatrix}
+        \rightarrow
+        \begin{bmatrix}
+        12 & -9 & -3\\
+        -12 & 8 & -8
+        \end{bmatrix}
+        \rightarrow
+        \begin{bmatrix}
+        0 & -1 & -11\\
+        -12 & 8 & -8
+        \end{bmatrix}\]
+        \[\text{Critical point at } (8,11)\]
+        \[\mat{H} = 
+        \begin{bmatrix}
+        4 & -3\\
+        -3 & 2
+        \end{bmatrix}\]
+        \[\det \mat{H} < 0\]
+        The critical point represents a saddle
+\end{itemize}
+
+\subsection{Apr 1: Sylvester Sylvester Sylvester Sylvester Sylvester}
+\begin{itemize}
+    \item Unsurprisingly, negation also reverses definiteness, since the eigenvalues are negated. Alternatively, odd subdeterminants are negated too.
+    \item Sylvester's positive definite criterion for symmetric $d\times d$ matrices! Let $\Delta_n(\mat{A})$ be the $n^{th}$ principal subdeterminant
+            \[\mat{A} = \begin{bmatrix} \mat{B} & \vec{c}\\ \vec{c^T} & r \end{bmatrix} = \mat{A^T} = \begin{bmatrix} \mat{B^T} & \vec{c}\\ \vec{c^T} & r \end{bmatrix}\]
+            \[\vec{z} = (\vec{x},y)\]
+            \[Q_\mat{A}(\vec{z}) = \begin{bmatrix} \vec{x^T} & y \end{bmatrix} \begin{bmatrix} \mat{B} & \vec{c}\\ \vec{c^T} & r \end{bmatrix} \begin{bmatrix} \vec{x} \\ y \end{bmatrix} = \begin{bmatrix} \vec{x^T} & y \end{bmatrix} \begin{bmatrix} \mat{B}\vec{x} + \vec{c}y \\ \vec{c^T}\vec{x} + ry \end{bmatrix} = \vec{x^T}\mat{B}\vec{x} + \vec{x^T}\vec{c}y + y\vec{c^T}\vec{x} + yry = Q_\mat{B}(\vec{x}) + 2y\vec{c}\Cdot\vec{x} + ry^2\]
+        Importantly, $\mat{A} \succ 0 \Rightarrow \mat{B} \succ 0$:
+            \[\vec{z} = (\vec{x},0) \Rightarrow Q_\mat{A}(\vec{z}) = Q_\mat{B}(\vec{x}) + 0 + 0\]
+        For any $\vec{x}$ this is true
+    \item Start with positive definiteness and prove positive subdeterminants; base case $d=1$ is biconditional: a positive number is positive definite. Assume the $d-1$ case,
+            \[\mat{B} \succ 0 \Rightarrow \Delta_{1\hdots d-1}(\mat{B}) = \Delta_{1 \hdots d-1}(\mat{A}) > 0\]
+            \[\mat{B} \succ 0 \Leftarrow \mat{A} \succ 0 \Rightarrow (\forall j) \,  \lambda_j > 0\]
+            \[\det \mat{A} = \Delta_d(\mat{A}) = \prod \lambda > 0\]
+        Induction is complete: $\mat{A} \succ 0 \Rightarrow \Delta_{1 \hdots d} > 0$
+    \item Now, start with positive subdeterminants and prove positive definiteness. The base case is the same; assume the $d-1$ case
+            \[\Delta_{1 \hdots d} (\mat{A}) > 0\]
+            \[\Delta_{1 \hdots d-1}(\mat{B}) > 0 \Rightarrow \mat{B} \succ 0\]
+        $\mat{A}$ cannot have one negative eigenvalue, or else not every subdeterminant would be positive: $\det \mat{A} \neq 0$. The same prohibits $\mat{A}$ from having a $0$ eigenvalue
+    \item Suppose $\mat{A}$ had two or more negative eigenvalues,
+            \[\lambda_1, \lambda_2 < 0\]
+            \[\mat{A}\vec{v} = \lambda_1\vec{v} \quad \quad \mat{A}\vec{w} = \lambda_2\vec{w}\]
+        Either the eigenvectors are of two different orthogonal eigenspaces or they reside in at least a planar eigenspace, so it is possible to pick $\vec{v}$, $\vec{w}$ to have
+            \[\vec{v} \perp \vec{w}\]
+        Contrive:
+            \[\vec{z} = w_d\vec{v} - v_d\vec{w} = (\vec{x},0)\]
+            \[Q_\mat{A}(\vec{z}) = Q_\mat{B}(\vec{x})\]
+    \item Consider $\mat{B}$, then $v_d \neq 0 \land w_d \neq 0$. Assume that $v_d = 0$
+            \[\mat{A}\vec{v} = \begin{bmatrix} \mat{B} & \vec{c}\\ \vec{c^T} & r \end{bmatrix} \begin{bmatrix} \vec{u} \\ v_d \end{bmatrix} = \begin{bmatrix} \mat{B}\vec{u} + \vec{c}v_d \\ \vec{c^T}\vec{u} + v_d \end{bmatrix} = \begin{bmatrix} \mat{B}\vec{u} \\ \vec{c^T}\vec{u} \end{bmatrix}\]
+            \[\lambda_1 \vec{v} = \begin{bmatrix} \lambda_1 \vec{u} \\ 0 \end{bmatrix}\]
+            \[\mat{B}\vec{u} = \lambda_1\vec{u}\]
+        But $\mat{B} \succ 0$, so it cannot have the negative eigenvalue $\lambda_1$. The same argument holds for $w_d$. Now, $\vec{z} \neq 0$ since it is a nonzero linear combination of linearly independent nonzeros, and $\vec{x}$ is also $\neq 0$, so that is good for computing the quadratic forms
+    \item Go all the way back to $Q_\mat{A} (\vec{z}) = Q_\mat{B}(\vec{x}) > 0$
+            \[= (w_d\vec{v^T} - v_d\vec{w^T})\mat{A}(w_d\vec{v} - v_d\vec{w}) = (w_d\vec{v^T} - v_d\vec{w^T})(w_d\mat{A}\vec{v} - v_d\mat{A}\vec{w})\]
+            \[= (w_d\vec{v^T} - v_d\vec{w^T})(w_d\lambda_1\vec{v} - v_d\lambda_2\vec{w}) = w_d\vec{v^T}w_d\lambda_1\vec{v} - v_d\vec{w^T}w_d\lambda_1\vec{v} - w_d\vec{v^T}v_d\lambda_2\vec{w} + v_d\vec{w^T}v_d\lambda_2\vec{w}\]
+            \[= w_d^2 \lambda_1 |\vec{v}|^2 + v_d^2 \lambda_2 |\vec{w}|^2 - v_dw_d(\vec{v} \Cdot \vec{w})(\lambda_1 + \lambda_2) = w_d^2 \lambda_1 |\vec{v}|^2 + v_d^2 \lambda_2 |\vec{w}|^2 < 0\]
+        Contradiction! So $\mat{A}$ cannot have two or more negative eigenvalues, it also cannot have one negative eigenvalue, and it cannot have any zero eigenvalues. Therefore, it must be positive definite
+\end{itemize}
+
+
+\subsection{Apr 10: EVT and Friends}
+\begin{itemize}
+    \item  Let $f: D^\circ \rightarrow \R$ be $C^0$. If on the boundary of the restriction on $S$, $f$ does not have an infinite discontinuity, then it must have extrema. 
+    \item EVT guarantees that $S$ being compact is good enough; there are other weaker theorems!
+    \item MinVT: the restriction of $f$ on set $S$ has a minimum if $\exists \bar{B}(\vec{c}) : \forall \vec{x} \in S \backslash \bar{B}, f(\vec{x}) \geq f(\vec{c})$; the minimum will be some $\vec{q} \in \bar{B}$\\
+    This condition is most useful when $f$ has end behavior approaching $\infty$
+    \item MaxVT is essentially the same thing but negated
+    \item Both are proved by EVT because $\bar{B}$ is compact, so $f$ has an extremum in  $\bar{B}$ and every other point in $S$ is less extreme
+    \item Of course, $\bar{B}$ can be replaced with any other compact set
+\end{itemize}
+
+\subsection{Apr 12: Critical Computation}
+\begin{itemize}
+    \item To find critical points, $f \in C^1$, and let $S$ be nonempty closed. Assume $\text{argmax} (f|_S) \neq \O$, argmax being the points where the maximum is achieved, and 
+        \[\text{bd} \, S \subseteq \bigcup_{\alpha \in A} P_\alpha \subseteq S\]
+        \[U_\alpha \overset{\circ}{\subseteq} \R^{j(\alpha)}, j(\alpha) \geq 0\]
+        \[\vecf{g_\alpha} : U_\alpha \overset{C^1}{\rightarrow} S\]
+        \[P_\alpha = \text{ran} \, (\vecf{g_\alpha})\]
+    \item The complicated condition is, in short, that $\text{bd} \, S$ can be in the union of the range of a bunch of $\vecf{g}$-functions, or in the union of many n-dimensional "open" patches $P_\alpha$ - the patch may only be open in its preimage dimension, with each patch also in $S$
+    \item Then, $\text{argmax} (f|_S) = \text{argmax} (f|_C)$, where $C$ is the union of the critical points in the interior of $S$ and the images under $\vecf{g}$ of the critical points in each patch $(\vecf{g_\alpha}[\text{crit}(f \circ\vecf{g_\alpha},U_\alpha)])$ i.e. the maximum must occur at critical points
+    \item It is necessary to consider patches because they transform the closed boundary of S into sets that are open in lower dimension, and critical points only make sense in open sets
+    \item Additionally, an easy consideration is that the argmax on a larger set intersected with a smaller set inside it is a subset of the argmax on the smaller set; if it:
+        \[S \subseteq T \Rightarrow S \cap \text{argmax} (f|_T) \subseteq \text{argmax} (f|_S)\]
+\end{itemize}
+
+\subsection{Apr 13: Critical Proof}
+\begin{itemize}
+    \item An even more marvelous proof of critical point extrema, which this page is just wide enough to contain.
+    \item Let $\vec{p} \in \text{amx}(f|_S)$, then $\forall \vec{x} \in S, f(\vec{p}) \geq f(\vec{x})$. Either $\vec{p} \in S^\circ$ or $\vec{p} \in \text{bd} \, S$
+    \item If $\vec{p} \in S^\circ$, let $B$ be a small ball around it in $S$.   
+            \[\vec{p} \in B \cap \text{amx}(f|_S)\]
+            \[\vec{p} \in \text{amx}(f|_B)\]
+        $\vec{p}$ is a local maximum in $S$
+            \[\vec{p} \in \text{crit}(f,S^\circ)\]
+            \[\vec{p} \in C \cap \text{amx}(f|_S)\]
+            \[\vec{p} \in \text{amx}(f|_C)\]
+    \item If $\vec{p} \in \text{bd} \, S$, then $\vec{p}$ must be in one patch, $\vec{p} = \vecf{g_\beta}(\vec{u_0})$. Because of its maximality, $\vec{u_0}$ must be an element of $\text{amx}(f \circ \vecf{g_\beta})$. Let $B_2$ be the ball around $\vec{u_0}$ which exists. 
+            \[\vec{u_0} \in B_2 \cap \text{amx}(f \circ \vecf{g_\beta})\]
+            \[\vec{u_0} \in \text{amx}((f \circ \vecf{g_\beta})|_{B_2})\]
+        $\vec{u_0}$ is a local maximum in $U_\beta$, and the proof is now the same
+    \item Let $\vec{q} \in \text{amx}(f|_C) \subseteq C \subseteq S$, then $\forall \vec{x} \in C, f(\vec{x}) \leq f(\vec{q})$. Assume $\vec{q} \notin \text{amx}(f|_S)$, by hypothesis, $f(\vec{p}) > f(\vec{q}) \Leftarrow \vec{p} \in \text{amx}(f|_S) \Rightarrow \vec{p} \in \text{amx}(f|_C)$; this is impossible, so $\vec{p} \in \text{amx}(f|_S)$
+\end{itemize}
+
+\subsection{May 29: Lagrange Multipliers}
+\begin{itemize}
+    \item Previous exploration into optimization restricted $\vec{x}$ in an explicitly specified domain, but what if that domain $S$ is just the solution set of another equation(s)?
+    \item Find the maximum of the objective $6 - x - 2y$ satisfying the constraint $x^2 + y^2 = 1$
+            \[g(\vec{x}) = c \rightarrow f(\vec{x})?\]
+        First use EVT... to find existence! In the specific case, $S$ is just a circle inside the domain of $f$, which is compact and so continuous $f$ will have extrema\\
+        Next, if $\vec{p} \in \text{aex}(f|_S)$, then either
+            \[\vec{\nabla} f(\vec{p}) = \lambda \vec{\nabla} g(\vec{p})\]
+        where $\lambda$ is the eponymous multiplier, or
+            \[\vec{\nabla} g(\vec{p}) = \vec{0}\]
+    \item Execution:
+            \[\vec{\nabla} g(\vec{p}) = (2x, 2y)\]
+            \[\vec{\nabla} f(\vec{p}) = (-1,-2)\]
+        Degeeracy only occurs at $(0,0)$, which does not satisfy $g$, however parallelism is possible at $(\frac{1}{\sqrt{5}},\frac{2}{\sqrt{5}})$ and $(\frac{-1}{\sqrt{5}},\frac{-2}{\sqrt{5}})$, which if unequal through $f$ (they are) must represent a point of either extrema!
+            
+    \item Generalization to many constraints:
+                \[\vec{\nabla} f(\vec{p}) = \sum \lambda_k \vec{\nabla} g_k(\vec{p})\]
+            so the gradient of $f$ is in the smaller subspace spanned by the gradients of $g_k$\\    
+            Or degeneracy,
+                \[\det (\vecf{g}')(\vecf{g}')^\mat{T} = 0\]
+            where the derivative matrix is invertible. This is equivalent to the gradients of the components being linearly dependent
+\end{itemize}
+
+\subsection{Jun 1: et Ultra}
+\begin{itemize}
+    \item The problem from before can be reformulated with three variables:
+            \[\text{Maximize } z \text{ if } \begin{bmatrix} 
+            6 - x - 2y - z\\
+            x^2 + y^2 
+            \end{bmatrix} = \begin{bmatrix} 
+            0\\
+            1 
+            \end{bmatrix}\]
+        Existence is first, the constraint set $S$ is the intersection of closed (and one bounded) sets, so EVT does apply; the solution of a continuous equation is closed, which will be proven later
+            \[6-x-2y-z = 0 \quad \quad x^2 + y^2 = 1\]
+            \[\vec{\nabla} g_1 = (-1,-2,-1)\]
+            \[\vec{\nabla} g_2 = (2x, 2y,0)\]
+            \[\vec{\nabla} f = (0,0,1)\]
+            \[(0,0,1) = \lambda_1 (-1,-2,-1) + \lambda_2 (2x,2y,0)\]
+            \[(-1,-2,0) = \lambda_2 (2x,2y,0)\]
+            \[(-1,-2,0) = \lambda_2 (2x,2y,0)\]
+            \[\left( -\frac{1}{\lambda_2},-\frac{1}{\lambda_2},0 \right) = (2x,y,0)\]
+        The solution is the same from here; the degenerate case also has no solution, since the only time
+            \[(-1,-2,-1) \, || \, (2x,2y,0)\]
+        is when the second is $(0,0,0)$, which fails in the same say as before
+    \item Time to formalize: 
+            \[f: U \overset{\circ}{\subseteq} \R^d \overset{C^1}{\rightarrow} \R ,\vecf{g} : V \overset{\circ}{\subseteq} \R^d \overset{C^1}{\rightarrow} \R, U \cap V = \overset{\circ} W \neq \O, 1 \leq \dim{\vecf{g}} \leq d\]
+            \[S = \{\vec{x} \in W | \vecf{g}(\vec{x}) = \vec{c}\} \neq \O\]
+            \[\exists \vec{p} \in \text{aex } f|_S\]
+            \[\Downarrow\]
+            \[\begin{cases}
+                \vec{\nabla} f(\vec{p}) = \vec{\nabla} f(\vec{p}) = \sum \lambda_k \vec{\nabla} g_k(\vec{p})\\
+                \vecf{g}(\vec{p}) = \vec{c}
+            \end{cases} \lor
+            \begin{cases}
+                \det (\vecf{g}'(\vec{p}))(\vecf{g}'(\vec{p}))^\mat{T} = 0\\
+                \vecf{g}(\vec{p}) = \vec{c}
+            \end{cases}\]
+\end{itemize}
+
+\subsection{Jun 5: Everybody Loves Proof}
+\begin{itemize}
+    \item For this proof, let $f|_S \leq f(\vec{p})$
+    \item By way of ImpFT: 
+            \[\vecf{F}(\vec{x}) = \vecf{F}(\vec{y},\vec{z}) =  \vecf{g}(\vec{x}) - \vec{c} = \vec{0}\]
+        Solve for $k$ variables $(\vec{y})$ in terms of $d - k$ variables $(\vec{z})$ near the solution $\vec{p} = (\vec{a},\vec{b})$, then non-degeneracy is required
+            \[\det \frac{\del \vecf{F}}{\del \vec{y}} (\vec{p}) = \det \frac{\del \vecf{g}}{\del \vec{y}} (\vec{p}) \neq 0\]
+            \[ \Rightarrow \exists \vecf{\psi} : (\text{nbhd } \vec{a} \ni \vec{y}) \overset{C^1}{\rightarrow} (\text{nbhd } \vec{b} \ni \vec{z})\]
+    \item To prove $LS(\vec{p}) \lor DS(\vec{p})$, it is often easier to rephrase it as $\lnot LS(\vec{p}) \Rightarrow DS(\vec{p})$, or better yet, $LS(\vec{p}) \Leftarrow \lnot DS(\vec{p})$ so do that
+            \[ \det (\vecf{g}'(\vec{p}))(\vecf{g}'(\vec{p}))^\mat{T} = \det (\vecf{F}'(\vec{p}))(\vecf{F}'(\vec{p}))^\mat{T} \neq 0\]
+    \item A fun useful theorem, $\det \text{gram } \mat{A} \neq 0 \Leftrightarrow \text{rank } \mat{A} = \text{full}$
+    \item Also $\det \text{gram } \mat{A} = 0 \Leftrightarrow \det \text{gram } \mat{A^T} = 0$
+    \item Therefore, the failure of $DS$ is equivalent to $\text{rank }\vecf{F}'(\vec{p}) =  \text{full} = k$, now assume that!
+\end{itemize}
+
+\subsection{Jun 8: Everybody Kind of Loves Proof}
+\begin{itemize}
+    \item Since $\vecf{F'}(\vec{p})$ has full rank, it has a set of $k$ linearly independent columns out of $d$; without too much LOG just pick the first $k$ and modify the proof if not.
+    \item Each row vector $\vec{x}$ will have the structure $(y_1,y_2, \hdots, y_k, z_1, \hdots, z_{d-k})$. Also, the left of the derivative matrix is just full rank $\frac{\del \vecf{F}}{\del \vec{y}}(\vec{p})$, and its determinant is not $0$ by FTLA.
+    \item Now ImpFT takes effect, so $\vec{y} = \psi(\vec{z})$ near $\vec{p}$. Also, $S \cap (\text{nbhd } a \times \text{nbhd } b)$, which is not empty ($\vec{p}$), is just the range of $\phi(\vec{z}) = (\psi(\vec{z}).\vec{z})$, a parameterization with the $z$ variables, since that is well defined exactly on the neighborhoods. $\phi$ is also $C^1$ since $\psi$ is too and $z_n$ is $C^A$
+    \item Now force $\vec{x}$ in the range of $\phi$, so $f|_S(\vec{x}) = f(\vec{x}) = (f \circ \vecf{\phi})(\vec{z})$. Additionally, since $\vec{p}$ is a maximum, $(f \circ \vecf{\phi})(\vec{z}) \leq (f \circ \vecf{\phi})(\vec{b})$, so $\vec{b}$ is also a maximum of its set. $(f \circ \vecf{\phi})'(\vec{b})$ can now be taken to be $\mat{O}$, $= f'(\vecf{\phi}(\vec{b})) \vecf{\phi '}(\vec{b}) = f'(\vec{p}) \mat{M}$, $\vec{0} = \mat{M^T} \nabla f (\vec{p})$. Since 
+            \[\mat{M^T} = \begin{bmatrix}
+                \psi'_1 (\vec{z})\\
+                \psi'_2 (\vec{z})\\
+                \vdots\\
+                \psi'_k (\vec{z})\\
+                \mat{I}
+            \end{bmatrix}\]
+        must have rank $d-k$ by the last rows, and nullity $k$, adding to $d$. Now, $\nabla f(\vec{p})$ is in the $k$-space, but how is that space made? $\vecf{g}(\vecf{\phi}(\vec{z})) = \vec{c}$ from before, so the derivatives are also equal. $\vecf{g'}(\vecf{\phi}(\vec{z})) \vecf{\phi '}(\vec{z}) = \mat{O}$. Taking transposes eventually leads to 
+            \[\begin{bmatrix}
+                \mat{M^T}\vec{\nabla} g_1(\vec{p}) & \mat{M^T}\vec{\nabla} g_2(\vec{p}) & \hdots & \mat{M^T}\vec{\nabla} g_k(\vec{p})\\
+            \end{bmatrix} = \mat{O}\]
+        All $k$ of those vectors are all in the null space; are they linearly independent? It turns out so by assumption of full rank, so these can make a basis!
+            \[\vec{\nabla} f(\vec{p}) = \sum \lambda_k \vec{\nabla} g_k (\vec{p})\]
+        $LS$ is proven
+\end{itemize}
+
+\subsection{That's a Wrap!}
+\end{document} 
